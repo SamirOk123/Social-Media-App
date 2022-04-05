@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:social_media/views/login_page.dart';
-
+import 'package:social_media/views/authentication/login_page.dart';
+import 'package:social_media/views/main/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,12 +13,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
- return Sizer(
+    return Sizer(
       builder: (context, orientation, deviceType) {
-          return const MaterialApp(
-      title: 'Social Media',
-      home: LoginPage(),
-      debugShowCheckedModeBanner: false,
- );});
- }
+        return const GetMaterialApp(
+          title: 'Social Media',
+          home: HomeScreen(),
+          debugShowCheckedModeBanner: false,
+        );
+      },
+    );
+  }
 }
