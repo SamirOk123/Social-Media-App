@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:social_media/views/authentication/login_page.dart';
 import 'package:social_media/views/main/home_screen.dart';
 
 void main() {

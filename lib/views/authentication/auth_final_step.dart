@@ -37,6 +37,14 @@ class AuthFinalStep extends StatelessWidget {
                   SizedBox(
                     height: 7.h,
                   ),
+                  const Text(
+                    'Name',
+                    textAlign: TextAlign.start,
+                  ),
+                  const TextField(),
+                   SizedBox(
+                    height: 7.h,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(width: 0.1.w),
@@ -63,13 +71,13 @@ class AuthFinalStep extends StatelessWidget {
                           firstDate: DateTime(1947),
                           lastDate: DateTime(3000));
                       if (newDate == null) return;
-
+            
                       datePickerController.date.value = newDate;
                     },
                     child: const Text('Set date of birth'),
                   ),
                   SizedBox(
-                    height: 15.h,
+                    height: 5.h,
                   ),
                   Align(
                     alignment: Alignment.bottomRight,

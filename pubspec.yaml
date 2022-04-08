@@ -30,5 +30,6 @@ flutter:
         - asset: assets/fonts/title.ttf
   assets:
         - assets/icons/
+        - assets/images/
         
         
