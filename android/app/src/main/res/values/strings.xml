@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="app_name">Twitch Social Media</string>
+<string name="facebook_app_id">396232698665707</string>
+<string name="fb_login_protocol_scheme">fb396232698665707</string>
+<string name="facebook_client_token">e1a202eb4a78ff27e7762e1c62d92a51</string>
+
+</resources>

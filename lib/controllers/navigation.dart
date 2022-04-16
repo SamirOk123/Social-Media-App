@@ -5,7 +5,8 @@ import 'package:social_media/views/main/profile.dart';
 import 'package:social_media/views/main/search.dart';
 
 class NavigationController extends GetxController {
-  RxList pages = const [HomePage(), Search(), Notifications(), Profile()].obs;
+  RxList pages =
+      [const HomePage(), const Search(), const Notifications(), Profile()].obs;
   RxInt selectedIndex = 0.obs;
 
   void onItemTapped(int index) {

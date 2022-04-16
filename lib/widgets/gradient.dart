@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media/constants.dart';
 
 class CustomGradient extends StatelessWidget {
   const CustomGradient({Key? key, required this.child}) : super(key: key);
@@ -15,8 +16,8 @@ class CustomGradient extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.white,
-            Color(0xffa6daf8),
+            kWhite,
+            kBlue,
           ],
         ),
       ),

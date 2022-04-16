@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/constants.dart';
 
 class ProfileDescription extends StatelessWidget {
   const ProfileDescription(
@@ -24,7 +25,7 @@ class ProfileDescription extends StatelessWidget {
         Text(
           place,
           style: TextStyle(
-              fontSize: 7.sp, fontWeight: FontWeight.w600, color: Colors.black),
+              fontSize: 7.sp, fontWeight: FontWeight.w600, color: kBlack),
         ),
         SizedBox(
           height: 1.h,
@@ -32,7 +33,7 @@ class ProfileDescription extends StatelessWidget {
         Text(
           job,
           style: TextStyle(
-              fontSize: 7.sp, fontWeight: FontWeight.w600, color: Colors.black),
+              fontSize: 7.sp, fontWeight: FontWeight.w600, color: kBlack),
         ),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,

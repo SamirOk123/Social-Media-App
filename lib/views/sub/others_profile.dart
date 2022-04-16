@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/constants.dart';
 import 'package:social_media/views/main/chat.dart';
 import 'package:social_media/widgets/custom_circle_avatar.dart';
 import 'package:social_media/widgets/gradient.dart';
@@ -31,11 +32,11 @@ class _OthersProfileState extends State<OthersProfile> {
                 child: following
                     ? const Text(
                         'Following',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: kBlack),
                       )
                     : const Text(
                         'Follow',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: kBlack),
                       )),
             TextButton(
                 onPressed: () {
@@ -43,7 +44,7 @@ class _OthersProfileState extends State<OthersProfile> {
                 },
                 child: const Text(
                   'Message',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: kBlack),
                 ))
           ],
           backgroundColor: Colors.transparent,
@@ -51,7 +52,7 @@ class _OthersProfileState extends State<OthersProfile> {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: kBlack,
             ),
             onPressed: () {
               Get.back();

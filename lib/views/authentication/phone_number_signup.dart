@@ -1,52 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-
-import 'package:social_media/views/authentication/auth_final_step.dart';
+import 'package:social_media/dependency_injection.dart';
+import 'package:social_media/views/authentication/login_page.dart';
 import 'package:social_media/views/authentication/signup_page.dart';
+import 'package:social_media/views/main/home_screen.dart';
+import 'package:social_media/widgets/rich_text.dart';
+import 'package:social_media/widgets/custom_button.dart';
 import 'package:social_media/widgets/gradient.dart';
-
-import '../../dependency_injection.dart';
+import 'package:social_media/widgets/input_field.dart';
 
 class PhoneNumberSignUp extends StatelessWidget {
   const PhoneNumberSignUp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     return SafeArea(
       child: Scaffold(
         body: CustomGradient(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.h),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Center(
-                    child: Text(
-                      'Twitch!',
-                      style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        'Twitch!',
+                        style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  const Text(
-                    'Phone number',
-                    textAlign: TextAlign.start,
-                  ),
-                  const TextField(),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  const Text('Password'),
-                  Obx(
-                    () => TextField(
-                      obscureText: obscureTextController.obscureText.value,
-                      decoration: InputDecoration(
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    InputField(
+                        controller: phoneNumberController.phoneNumberController,
+                        keyboardType: TextInputType.phone,
+                        prefixIcon: const Icon(Icons.phone),
+                        hintText: 'Phone number (+91)'),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Obx(
+                      () => InputField(
+                        controller: phoneNumberController.passwordController,
+                        prefixIcon: const Icon(Icons.key),
+                        hintText: 'Password',
+                        obscureText: obscureTextController.obscureText.value,
                         suffixIcon: IconButton(
                           onPressed: () {
                             obscureTextController.obscureText.value =
@@ -64,50 +64,72 @@ class PhoneNumberSignUp extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(const AuthFinalStep());
-                    },
-                    child: const Text('Signup'),
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  const Center(child: Text('Or')),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/icons/google.png',
-                        width: 7.w,
-                        height: 7.h,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(const SignUpPage());
-                        },
-                        child: Image.asset(
-                          'assets/icons/gmail.png',
-                          width: 7.w,
-                          height: 7.h,
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomButton(
+                      label: 'Sign Up',
+                      onPressed: () {
+                        phoneNumberController.getOtp(context);
+                      },
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    const Center(child: Text('OR')),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            await firebaseAuthServices
+                                .signInWithGoogle(context);
+                            Get.offAll(const HomeScreen());
+                          },
+                          child: Image.asset(
+                            'assets/icons/google.png',
+                            width: 7.w,
+                            height: 7.h,
+                          ),
                         ),
-                      ),
-                      Image.asset(
-                        'assets/icons/facebook.png',
-                        width: 7.w,
-                        height: 7.h,
-                      ),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(SignUpPage());
+                          },
+                          child: Image.asset(
+                            'assets/icons/gmail.png',
+                            width: 7.w,
+                            height: 7.h,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            firebaseAuthServices.signinWithFacebook(context);
+                          },
+                          child: Image.asset(
+                            'assets/icons/facebook.png',
+                            width: 7.w,
+                            height: 7.h,
+                          ),
+                        ),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomRichText(
+                      label: 'Alredy have an account?',
+                      richText: 'Login',
+                      onPressed: () {
+                        Get.to(LoginPage());
+                      },
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
               ),
             ),
           ),

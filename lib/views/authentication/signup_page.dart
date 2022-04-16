@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/authentication/auth_final_step.dart';
+import 'package:social_media/views/authentication/login_page.dart';
 import 'package:social_media/views/authentication/phone_number_signup.dart';
+import 'package:social_media/views/main/home_screen.dart';
+import 'package:social_media/widgets/rich_text.dart';
+import 'package:social_media/widgets/custom_button.dart';
 import 'package:social_media/widgets/gradient.dart';
-import '../../dependency_injection.dart';
+import 'package:social_media/widgets/input_field.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  SignUpPage({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+//Method for Signing up
+  Future<void> signupUser(BuildContext context) async {
+    String res = await firebaseAuthServices.signupUser(
+        email: emailController.text, password: passwordController.text);
+
+    if (res == 'Success') {
+      Get.to(AuthFinalStep());
+    } else {
+      functionsController.showSnackBar(context, res);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,35 +35,34 @@ class SignUpPage extends StatelessWidget {
       child: Scaffold(
         body: CustomGradient(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.h),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Center(
-                    child: Text(
-                      'Twitch!',
-                      style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        'Twitch!',
+                        style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  const Text(
-                    'Email',
-                    textAlign: TextAlign.start,
-                  ),
-                  const TextField(),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  const Text('Password'),
-                  Obx(
-                    () => TextField(
-                      obscureText: obscureTextController.obscureText.value,
-                      decoration: InputDecoration(
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    InputField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: const Icon(Icons.person),
+                        hintText: 'Email'),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Obx(
+                      () => InputField(
+                        prefixIcon: const Icon(Icons.key),
+                        hintText: 'Password',
+                        obscureText: obscureTextController.obscureText.value,
+                        controller: passwordController,
                         suffixIcon: IconButton(
                           onPressed: () {
                             obscureTextController.obscureText.value =
@@ -61,50 +80,77 @@ class SignUpPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(const AuthFinalStep());
-                    },
-                    child: const Text('Signup'),
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  const Center(child: Text('Or')),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        child: Image.asset(
-                          'assets/icons/call.png',
-                          width: 7.w,
-                          height: 7.h,
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomButton(
+                      label: 'Sign Up',
+                      onPressed: () {
+                        signupUser(context);
+                      },
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    const Center(child: Text('OR')),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          child: Image.asset(
+                            'assets/icons/call.png',
+                            width: 7.w,
+                            height: 7.h,
+                          ),
+                          onTap: () {
+                            Get.to(const PhoneNumberSignUp());
+                          },
                         ),
-                        onTap: () {
-                          Get.to(const PhoneNumberSignUp());
-                        },
-                      ),
-                      Image.asset(
-                        'assets/icons/google.png',
-                        width: 7.w,
-                        height: 7.h,
-                      ),
-                      Image.asset(
-                        'assets/icons/facebook.png',
-                        width: 7.w,
-                        height: 7.h,
-                      ),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                        GestureDetector(
+                          onTap: () async {
+                            await firebaseAuthServices
+                                .signInWithGoogle(context);
+                            Get.offAll(const HomeScreen());
+                          },
+                          child: Image.asset(
+                            'assets/icons/google.png',
+                            width: 7.w,
+                            height: 7.h,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.offAll(const HomeScreen());
+                          },
+                          child: GestureDetector(
+                            onTap: () {
+                              firebaseAuthServices.signinWithFacebook(context);
+                            },
+                            child: Image.asset(
+                              'assets/icons/facebook.png',
+                              width: 7.w,
+                              height: 7.h,
+                            ),
+                          ),
+                        ),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomRichText(
+                      label: 'Alredy have an account?',
+                      richText: 'Login',
+                      onPressed: () {
+                        Get.to(LoginPage());
+                      },
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
               ),
             ),
           ),

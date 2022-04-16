@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/widgets/gradient.dart';
 
@@ -14,7 +15,7 @@ class HomeScreen extends StatelessWidget {
           () => BottomNavigationBar(
             currentIndex: navigationController.selectedIndex.value,
             onTap: navigationController.onItemTapped,
-            unselectedItemColor: Colors.black,
+            unselectedItemColor: kBlack,
             selectedItemColor: Colors.grey,
             showSelectedLabels: false,
             showUnselectedLabels: false,
@@ -27,7 +28,6 @@ class HomeScreen extends StatelessWidget {
                 icon: Icon(Icons.search),
                 label: 'Search',
               ),
-             
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite),
                 label: 'Notifications',
@@ -39,7 +39,6 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-       
         body: CustomGradient(
           child: Obx(
             () => Center(

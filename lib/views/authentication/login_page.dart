@@ -1,98 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/authentication/signup_page.dart';
+import 'package:social_media/views/main/home_screen.dart';
+import 'package:social_media/widgets/custom_button.dart';
 import 'package:social_media/widgets/gradient.dart';
-
-import '../../dependency_injection.dart';
-
-
-
-
+import 'package:social_media/widgets/input_field.dart';
+import 'package:social_media/widgets/rich_text.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
 
- 
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+//METHOD FOR LOGIN
+  void loginUser(BuildContext context) async {
+    String res = await firebaseAuthServices.loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    if (res == 'Success!') {
+      Get.offAll(const HomeScreen());
+    } else {
+      functionsController.showSnackBar(context, res);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-  
     return SafeArea(
       child: Scaffold(
         body: CustomGradient(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.h),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Center(
-                    child: Text(
-                      'Twitch!',
-                      style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  const Text(
-                    'User name',
-                    textAlign: TextAlign.start,
-                  ),
-                  const TextField(),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  const Text('Password'),
-                Obx(() =>   TextField(
-                    obscureText: obscureTextController.obscureText.value,
-                    decoration: InputDecoration(
-                      suffixIcon:IconButton(
-                        onPressed: () {
-                         
-                            obscureTextController.obscureText.value =!obscureTextController.obscureText.value;
-                         
-                        },
-                        icon: obscureTextController.obscureText.value
-                            ? Icon(
-                                Icons.visibility_off,
-                                size: 3.h,
-                              )
-                            : Icon(
-                                Icons.visibility,
-                                size: 3.h,
-                              ),
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Hero(
+                        tag: 'twitch',
+                        child: Text(
+                          'Twitch!',
+                          style:
+                              TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
+                        ),
                       ),
-                    ),),),
-                  
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Login'),
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  const Text('Don\'t have an account yet?'),
-                  SizedBox(
-                    height: 0.8.h,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(const SignUpPage());
-                    },
-                    child: const Text(
-                      'Sign up',
-                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    InputField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: const Icon(Icons.email),
+                        hintText: 'Email'),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Obx(
+                      () => InputField(
+                        prefixIcon: const Icon(Icons.key),
+                        hintText: 'Password',
+                        obscureText: obscureTextController.obscureText.value,
+                        controller: _passwordController,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            obscureTextController.obscureText.value =
+                                !obscureTextController.obscureText.value;
+                          },
+                          icon: obscureTextController.obscureText.value
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  size: 3.h,
+                                )
+                              : Icon(
+                                  Icons.visibility,
+                                  size: 3.h,
+                                ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    CustomButton(
+                      label: 'Login',
+                      onPressed: () {
+                        loginUser(context);
+                      },
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    CustomRichText(
+                      label: 'Don\'t have an account yet?',
+                      richText: 'Signup',
+                      onPressed: () {
+                        Get.to(SignUpPage());
+                      },
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
               ),
             ),
           ),

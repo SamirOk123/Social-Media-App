@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/constants.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 
@@ -52,7 +53,7 @@ class ChatScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: kBlack,
             ),
             onPressed: () {
               Get.back();
@@ -62,7 +63,7 @@ class ChatScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(
                 Icons.call,
-                color: Colors.black,
+                color: kBlack,
               ),
               onPressed: () {},
             ),

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "918094226656",
+    "project_id": "twitch-5faab",
+    "storage_bucket": "twitch-5faab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918094226656:android:c31283d48622d20e0f5c85",
+        "android_client_info": {
+          "package_name": "com.example.social_media"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918094226656-9ameho7bj04k0cht0v076gmbsc8tfni2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.social_media",
+            "certificate_hash": "5e9cce3bd9ca9ecb879501845ff1132d6c08fd24"
+          }
+        },
+        {
+          "client_id": "918094226656-at03urkmjsoc0vurdu1o6r8hi6jf3jl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO2ylV4H3pvp-_gdsRsslwGVUASF76EH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918094226656-at03urkmjsoc0vurdu1o6r8hi6jf3jl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

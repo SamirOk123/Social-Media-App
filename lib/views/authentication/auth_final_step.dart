@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/dependency_injection.dart';
+import 'package:social_media/models/user_model.dart';
+import 'package:social_media/views/main/home_screen.dart';
+import 'package:social_media/widgets/custom_button.dart';
 import 'package:social_media/widgets/gradient.dart';
-import '../../dependency_injection.dart';
+import 'package:social_media/widgets/input_field.dart';
 
 class AuthFinalStep extends StatelessWidget {
-  const AuthFinalStep({Key? key}) : super(key: key);
+  AuthFinalStep({Key? key}) : super(key: key);
+
+  final userNameController = TextEditingController();
+  final bioController = TextEditingController();
+  final locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,86 +21,106 @@ class AuthFinalStep extends StatelessWidget {
       child: Scaffold(
         body: CustomGradient(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 0.h),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Center(
-                    child: Text(
-                      'Twitch!',
-                      style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  const Text(
-                    'User name',
-                    textAlign: TextAlign.start,
-                  ),
-                  const TextField(),
-                  SizedBox(
-                    height: 7.h,
-                  ),
-                  const Text(
-                    'Name',
-                    textAlign: TextAlign.start,
-                  ),
-                  const TextField(),
-                   SizedBox(
-                    height: 7.h,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 0.1.w),
-                    ),
-                    height: 8.h,
-                    width: double.infinity,
-                    child: Center(
-                      child: Obx(
-                        () => Text(
-                          '${datePickerController.date.value.day} - ${datePickerController.date.value.month} - ${datePickerController.date.value.year}',
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        'Twitch!',
+                        style: TextStyle(fontSize: 35.sp, fontFamily: 'Samir'),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 7.h,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      DateTime? newDate = await showDatePicker(
-                          context: context,
-                          initialDate: datePickerController.date.value,
-                          firstDate: DateTime(1947),
-                          lastDate: DateTime(3000));
-                      if (newDate == null) return;
-            
-                      datePickerController.date.value = newDate;
-                    },
-                    child: const Text('Set date of birth'),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Icon(
-                      Icons.keyboard_arrow_right,
-                      size: 6.h,
+                    SizedBox(
+                      height: 5.h,
                     ),
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                    InputField(
+                      controller: userNameController,
+                      hintText: 'User name',
+                      prefixIcon: const Icon(Icons.person),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    InputField(
+                      controller: bioController,
+                      hintText: 'Bio',
+                      prefixIcon: const Icon(Icons.info),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    InputField(
+                      controller: locationController,
+                      hintText: 'Location',
+                      prefixIcon: const Icon(Icons.location_city),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Obx(
+                      () => CustomButton(
+                          label:
+                              'Date of birth:  ${datePickerController.date.value.day} - ${datePickerController.date.value.month} - ${datePickerController.date.value.year}',
+                          onPressed: () async {
+                            DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: datePickerController.date.value,
+                                firstDate: DateTime(1947),
+                                lastDate: DateTime(3000));
+                            if (newDate == null) return;
+
+                            datePickerController.date.value = newDate;
+                          }),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.keyboard_arrow_right,
+                          size: 6.h,
+                        ),
+                        onPressed: () {
+                          createUser(
+                              userName: userNameController.text,
+                              bio: bioController.text,
+                              location: locationController.text,
+                              dateOfBirth:
+                                  '${datePickerController.date.value.day} - ${datePickerController.date.value.month} - ${datePickerController.date.value.year}');
+                        },
+                      ),
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void createUser(
+      {required String userName,
+      BuildContext? context,
+      required String bio,
+      required String location,
+      required String dateOfBirth}) {
+    if (userName.isNotEmpty || bio.isNotEmpty || location.isNotEmpty) {
+      final newUser = User(
+          location: location,
+          bio: bio,
+          dateOfBirth: dateOfBirth,
+          userName: userName);
+      firebaseStorageServices.createUser(newUser);
+      Get.offAll(const HomeScreen());
+    } else {
+      functionsController.showSnackBar(context!,'Please fill all the fields');
+    }
   }
 }
