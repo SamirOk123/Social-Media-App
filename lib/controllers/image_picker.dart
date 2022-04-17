@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_media/dependency_injection.dart';
+import 'package:social_media/constants.dart';
 
 class ImagePickerController extends GetxController {
   final ImagePicker imagePicker = ImagePicker();
 
   XFile? pickedImage;
-
-  
 
   //METHOD FOR GETTING IMAGE FROM DEVICE
   Future<void> getImage(ImageSource source) async {
@@ -35,14 +33,26 @@ class ImagePickerController extends GetxController {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton.icon(
-                label: const Text('Camera'),
-                icon: const Icon(Icons.camera_alt),
+                label: const Text(
+                  'Camera',
+                  style: TextStyle(color: kBlack),
+                ),
+                icon: const Icon(
+                  Icons.camera_alt,
+                  color: kBlack,
+                ),
                 onPressed: () {
                   getImage(ImageSource.camera);
                 }),
             TextButton.icon(
-                label: const Text('Gallery'),
-                icon: const Icon(Icons.image),
+                label: const Text(
+                  'Gallery',
+                  style: TextStyle(color: kBlack),
+                ),
+                icon: const Icon(
+                  Icons.image,
+                  color: kBlack,
+                ),
                 onPressed: () {
                   getImage(ImageSource.gallery);
                 }),
@@ -54,7 +64,7 @@ class ImagePickerController extends GetxController {
 
   @override
   void onClose() {
-   dispose();
+    dispose();
     super.onClose();
   }
 }

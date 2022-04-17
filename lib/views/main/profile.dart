@@ -11,6 +11,7 @@ import 'package:social_media/widgets/custom_circle_avatar.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/post_followers_following_container.dart';
 import 'package:social_media/widgets/profile_description.dart';
+import 'package:social_media/widgets/shimmer_skelton.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -99,7 +100,7 @@ class Profile extends StatelessWidget {
                               name: user.userName,
                               place: user.location);
                     } else {
-                      return const SizedBox();
+                      return const UserInfoSkelton();
                     }
                   },
                 ),
@@ -156,3 +157,4 @@ class Profile extends StatelessWidget {
     }
   }
 }
+

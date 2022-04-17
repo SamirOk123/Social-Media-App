@@ -23,6 +23,7 @@ class Notifications extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: CircleAvatar(
+                    backgroundColor: Colors.black.withOpacity(0.04),
                     radius: 3.5.h,
                     backgroundImage: const NetworkImage(
                         'https://images.indianexpress.com/2016/05/mohanlal-7591.jpg'),
@@ -34,9 +35,9 @@ class Notifications extends StatelessWidget {
                   trailing: Container(
                     height: 5.h,
                     width: 5.h,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      image: DecorationImage(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.04),
+                      image: const DecorationImage(
                           image: AssetImage('assets/images/samir.jpg'),
                           fit: BoxFit.cover),
                     ),
