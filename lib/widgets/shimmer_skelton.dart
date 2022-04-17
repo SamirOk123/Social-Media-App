@@ -18,7 +18,7 @@ class ShimmerSkelton extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.04),
+          color: Colors.black.withOpacity(0.05),
           borderRadius: BorderRadius.circular(boarderRadius)),
     );
   }
