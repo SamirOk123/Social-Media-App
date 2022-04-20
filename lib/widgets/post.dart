@@ -4,7 +4,9 @@ import 'package:sizer/sizer.dart';
 import 'package:social_media/views/sub/others_profile.dart';
 
 class Post extends StatelessWidget {
-  const Post({Key? key}) : super(key: key);
+  const Post({Key? key, required this.imagePath}) : super(key: key);
+
+  final String imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +17,9 @@ class Post extends StatelessWidget {
             Get.to(() => const OthersProfile());
           },
           leading: CircleAvatar(
+            backgroundColor: Colors.black.withOpacity(0.05),
             radius: 3.h,
-            backgroundImage: const NetworkImage(
-                'https://pbs.twimg.com/profile_images/1499037411401420802/1RSuJlx__400x400.jpg'),
+            backgroundImage: NetworkImage(imagePath),
           ),
           trailing: IconButton(
             onPressed: () {},
@@ -40,7 +42,7 @@ class Post extends StatelessWidget {
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(
-                    'https://s3.ap-southeast-1.amazonaws.com/images.deccanchronicle.com/dc-Cover-n5lrssiq2bsjpmmhfmdl5fajs2-20191004000400.Medi.jpeg'),
+                    'https://slk4.sleck.net/wp-content/uploads/2021/07/cream-and-peach-feather-and-brushstroke-quote-instagram-post-template.png'),
                 fit: BoxFit.cover),
             color: Colors.teal,
           ),

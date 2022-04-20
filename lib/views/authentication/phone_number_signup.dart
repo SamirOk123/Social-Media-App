@@ -68,7 +68,7 @@ class PhoneNumberSignUp extends StatelessWidget {
                       height: 5.h,
                     ),
                     CustomButton(
-                      label: 'Sign Up',
+                      label: const Text('Sign Up'),
                       onPressed: () {
                         phoneNumberController.getOtp(context);
                       },
@@ -96,7 +96,7 @@ class PhoneNumberSignUp extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(SignUpPage());
+                            Get.to(const SignUpPage());
                           },
                           child: Image.asset(
                             'assets/icons/gmail.png',
@@ -124,7 +124,7 @@ class PhoneNumberSignUp extends StatelessWidget {
                       label: 'Alredy have an account?',
                       richText: 'Login',
                       onPressed: () {
-                        Get.to(LoginPage());
+                        Get.to(const LoginPage());
                       },
                     ),
                   ],

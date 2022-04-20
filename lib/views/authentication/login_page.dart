@@ -1,30 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
-import 'package:social_media/views/authentication/signup_page.dart';
-import 'package:social_media/views/main/home_screen.dart';
+import 'package:social_media/views/authentication/signup.dart';
 import 'package:social_media/widgets/custom_button.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 import 'package:social_media/widgets/rich_text.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({Key? key}) : super(key: key);
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-//METHOD FOR LOGIN
-  void loginUser(BuildContext context) async {
-    String res = await firebaseAuthServices.loginUser(
-        email: _emailController.text, password: _passwordController.text);
-    if (res == 'Success!') {
-      Get.offAll(const HomeScreen());
-    } else {
-      functionsController.showSnackBar(context, res);
-    }
-  }
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +37,7 @@ class LoginPage extends StatelessWidget {
                       height: 10.h,
                     ),
                     InputField(
-                        controller: _emailController,
+                        controller: loginController.emailController,
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: const Icon(Icons.email),
                         hintText: 'Email'),
@@ -63,7 +49,7 @@ class LoginPage extends StatelessWidget {
                         prefixIcon: const Icon(Icons.key),
                         hintText: 'Password',
                         obscureText: obscureTextController.obscureText.value,
-                        controller: _passwordController,
+                        controller: loginController.passwordController,
                         suffixIcon: IconButton(
                           onPressed: () {
                             obscureTextController.obscureText.value =
@@ -84,12 +70,15 @@ class LoginPage extends StatelessWidget {
                     SizedBox(
                       height: 5.h,
                     ),
-                    CustomButton(
-                      label: 'Login',
+                   Obx(() =>  CustomButton(
+                      label: loginController.isLoading.value == true
+                            ? const CircularProgressIndicator(
+                                color: kWhite,
+                              ): const Text('Login'),
                       onPressed: () {
-                        loginUser(context);
+                        loginController.loginUser(context);
                       },
-                    ),
+                    ),),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -97,7 +86,7 @@ class LoginPage extends StatelessWidget {
                       label: 'Don\'t have an account yet?',
                       richText: 'Signup',
                       onPressed: () {
-                        Get.to(SignUpPage());
+                        Get.to(const AuthFinalStep());
                       },
                     ),
                   ],

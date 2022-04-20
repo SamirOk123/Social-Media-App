@@ -1,23 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
-import 'package:social_media/models/user_model.dart';
 import 'package:social_media/views/authentication/login_page.dart';
 import 'package:social_media/views/sub/edit_profile.dart';
 import 'package:social_media/widgets/custom_circle_avatar.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/post_followers_following_container.dart';
 import 'package:social_media/widgets/profile_description.dart';
-import 'package:social_media/widgets/shimmer_skelton.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   //Variable for storing user info
   dynamic user;
+
+  //  String username = '';
+  //  String location = '';
+  //  String bio = '';
+  //  String photoUrl = '';
+
+  // // void getUserDetails() async {
+  //   DocumentSnapshot snap = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .get();
+
+  //       setState(() {
+  //         username = (snap.data() as Map<String,dynamic> )['userName'];
+  //         location = (snap.data() as Map<String,dynamic> )['location'];
+  //         bio = (snap.data() as Map<String,dynamic> )['bio'];
+  //         photoUrl = (snap.data() as Map<String,dynamic> )['photoUrl'];
+
+  //       });
+  // }
+
+  // @override
+  // void initState() {
+  //   getUserDetails();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,22 +63,13 @@ class Profile extends StatelessWidget {
           onPressed: () async {
             await firebaseAuthServices.signOut();
 
-            Get.offAll(LoginPage());
+            Get.offAll(const LoginPage());
           },
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditProfile(
-                    userName: user.userName,
-                    bio: user.bio,
-                    location: user.location,
-                  ),
-                ),
-              );
+             Get.to(EditProfile());
             },
             child: const Text(
               'Edit Profile',
@@ -62,48 +83,56 @@ class Profile extends StatelessWidget {
           children: [
             Row(
               children: [
-                StreamBuilder(
-                  stream: firebaseStorageServices.getImage(context),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const CustomCircleAvatar(
-                        backgroundImage: AssetImage('assets/images/user.png'),
-                      );
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.done) {
-                      return CustomCircleAvatar(
-                        backgroundImage: NetworkImage(
-                          snapshot.data.toString(),
-                        ),
-                      );
-                    }
+                CustomCircleAvatar(
+                    backgroundImage:
+                        NetworkImage(userController.getUser.photoUrl)),
+                // StreamBuilder(
+                //   stream: firebaseStorageServices.getImage(
+                //       context, 'profile/profilePic.jpg'),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasError) {
+                //       return const CustomCircleAvatar(
+                //         backgroundImage: AssetImage('assets/images/user.jpg'),
+                //       );
+                //     } else if (snapshot.connectionState ==
+                //         ConnectionState.done) {
+                //       return CustomCircleAvatar(
+                //         backgroundImage: NetworkImage(
+                //           snapshot.data.toString(),
+                //         ),
+                //       );
+                //     }
 
-                    return const CustomCircleAvatar(
-                      backgroundImage: AssetImage('assets/images/user.png'),
-                    );
-                  },
-                ),
+                //     return const CustomCircleAvatar(
+                //       backgroundImage: AssetImage('assets/images/user.jpg'),
+                //     );
+                //   },
+                // ),
                 SizedBox(
                   width: 5.w,
                 ),
-                FutureBuilder<User?>(
-                  future: readUser(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const SizedBox();
-                    } else if (snapshot.hasData) {
-                      user = snapshot.data;
-                      return user == null
-                          ? const SizedBox()
-                          : ProfileDescription(
-                              job: user.bio,
-                              name: user.userName,
-                              place: user.location);
-                    } else {
-                      return const UserInfoSkelton();
-                    }
-                  },
-                ),
+                ProfileDescription(
+                    job: userController.getUser.bio,
+                    name: userController.getUser.userName,
+                    place: userController.getUser.location),
+                // FutureBuilder<User?>(
+                //   future: readUser(),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasError) {
+                //       return const SizedBox();
+                //     } else if (snapshot.hasData) {
+                //       user = snapshot.data;
+                //       return user == null
+                //           ? const SizedBox()
+                //           : ProfileDescription(
+                //               job: user.bio,
+                //               name: user.userName,
+                //               place: user.location);
+                //     } else {
+                //       return const UserInfoSkelton();
+                //     }
+                //   },
+                // ),
               ],
               mainAxisAlignment: MainAxisAlignment.center,
             ),
@@ -142,19 +171,4 @@ class Profile extends StatelessWidget {
       ),
     );
   }
-
-// Method for getting user details
-  Future<User?> readUser() async {
-    final docUser = FirebaseFirestore.instance
-        .collection('users')
-        .doc('n55aTb73sBgAJtcV8DuT');
-    final snapshot = await docUser.get();
-
-    if (snapshot.exists) {
-      return User.fromJson(snapshot.data()!);
-    } else {
-      return null;
-    }
-  }
 }
-

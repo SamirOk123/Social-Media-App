@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashed_circle/dashed_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,11 +6,27 @@ import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/main/messages.dart';
+import 'package:social_media/views/sub/new_post.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/post.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+ Future<void> addData() async {
+    await userController.refreshUser();
+  }
+
+  @override
+  void initState() {
+    addData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +36,9 @@ class HomePage extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () {imagePickerController.showBottomSheet(context);},
+            onPressed: () {
+              Get.to(const NewPost());
+            },
             icon: const Icon(
               Icons.add,
               color: kBlack,
@@ -63,6 +82,7 @@ class HomePage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(2),
                           child: CircleAvatar(
+                            backgroundColor: Colors.black.withOpacity(0.05),
                             radius: 3.5.h,
                             backgroundImage: const NetworkImage(
                                 'https://resize.indiatvnews.com/en/resize/newbucket/715_-/2022/01/mammootty-1642327286.jpg'),
@@ -74,10 +94,30 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const Post(),
-              const Post(),
-              const Post(),
-              const Post(),
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('posts')
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.hasData) {
+                      ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          return Post(
+                            imagePath:
+                                snapshot.data!.docs[index].data()['userName'],
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('No posts available!'),
+                      );
+                    }
+                    return const SizedBox();
+                  }),
             ],
           ),
         ),

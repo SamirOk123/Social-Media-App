@@ -6,15 +6,13 @@ class InputField extends StatelessWidget {
   const InputField(
       {Key? key,
       this.keyboardType,
-      this.obscureText =false,
+      this.obscureText = false,
       this.prefixIcon,
-      this.containerHeight,
       this.suffixIcon,
       this.controller,
       required this.hintText})
       : super(key: key);
 
-  final double? containerHeight;
   final Widget? suffixIcon;
   final String hintText;
   final Widget? prefixIcon;
@@ -25,8 +23,7 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 98.w,
-      height: containerHeight,
+      height: 6.h,
       decoration: BoxDecoration(
           color: kWhite, borderRadius: BorderRadius.circular(5.h)),
       margin: EdgeInsets.all(1.h),
@@ -34,7 +31,8 @@ class InputField extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 2.h),
           child: TextField(
-            controller: controller,keyboardType: keyboardType,
+            controller: controller,
+            keyboardType: keyboardType,
             obscureText: obscureText,
             decoration: InputDecoration(
                 border: InputBorder.none,

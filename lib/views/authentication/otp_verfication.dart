@@ -62,7 +62,7 @@ class OtpVerificationPage extends StatelessWidget {
                     SizedBox(
                       height: 10.h,
                     ),
-                    CustomButton(label: 'Verify', onPressed: (){verifyOtp(context);}),
+                    CustomButton(label:const Text('Verify'), onPressed: (){verifyOtp(context);}),
                     
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,

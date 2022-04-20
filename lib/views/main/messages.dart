@@ -16,14 +16,14 @@ class Messages extends StatelessWidget {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: const Text('Prithviraj Sukumaran'),
-                    subtitle: const Text('Are you free now?'),
+                    title:  Text('Prithviraj Sukumaran',style: TextStyle(fontSize: 10.sp),),
+                    subtitle:  Text('Are you free now?',style: TextStyle(fontSize: 9.sp),),
                     leading: CircleAvatar(
                       radius: 3.5.h,
                       backgroundImage: const NetworkImage(
                           'https://images.indianexpress.com/2021/12/Prithviraj-Sukumaran-1200by667.jpg'),
                     ),
-                    trailing: const Text('11:34 AM'),
+                    trailing:  Text('11:34 AM',style: TextStyle(fontSize: 10.sp),),
                     onTap: () {
                       Get.to(() => const ChatScreen());
                     },

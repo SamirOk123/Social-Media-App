@@ -12,29 +12,24 @@ import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile(
-      {Key? key,
-      required this.bio,
-      required this.location,
-      required this.userName})
-      : super(key: key);
-
-  final String userName;
-  final String bio;
-  final String location;
+ 
 
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-  late final userNameController = TextEditingController()
-    ..text = widget.userName;
+  //TEXT EDITING CONTROLLERS
 
-  late final bioController = TextEditingController()..text = widget.bio;
+  late final userNameController = TextEditingController()
+    ..text = userController.getUser.userName;
+
+  late final bioController = TextEditingController()..text = userController.getUser.bio;
 
   late final locationController = TextEditingController()
-    ..text = widget.location;
+    ..text = userController.getUser.location;
+
+  //IMAGE PICKER CONTROLLER DEPENDENCY INJECTION
 
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
@@ -48,18 +43,20 @@ class _EditProfileState extends State<EditProfile> {
             IconButton(
               onPressed: () {
                 //UPLOADING IMAGE
-                if(imagePickerController.pickedImage!=null){
- final filePath = imagePickerController.pickedImage!.path;
-                final fileName = imagePickerController.pickedImage!.name;
+                if (imagePickerController.pickedImage != null) {
+                  final filePath = imagePickerController.pickedImage!.path;
+                  // final fileName = imagePickerController.pickedImage!.name;
+                  const fileName = 'profilePic.jpg';
+                  const uploadPath = 'profile/';
 
-                firebaseStorageServices
-                    .uploadFile(filePath, fileName, context)
-                    .then((value) => functionsController.showSnackBar(
-                        context, 'Upload completed'));
-                }else{
-                 const  SizedBox();
+                  firebaseStorageServices
+                      .uploadFile(filePath, fileName, context, uploadPath)
+                      .then((value) => functionsController.showSnackBar(
+                          context, 'Upload completed'));
+                } else {
+                  const SizedBox();
                 }
-               
+
                 // UPDATING USER INFO
                 updateInfo(
                   userName: userNameController.text,
@@ -98,35 +95,18 @@ class _EditProfileState extends State<EditProfile> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    StreamBuilder(
-                      stream: firebaseStorageServices.getImage(context),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const CustomCircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/user.png'),
-                          );
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.done) {
-                          return GetBuilder<ImagePickerController>(
+                    GetBuilder<ImagePickerController>(
                             builder: (controller) {
                               return CustomCircleAvatar(
                                   backgroundImage: imagePickerController
                                               .pickedImage ==
                                           null
-                                      ? NetworkImage(snapshot.data.toString())
+                                      ? NetworkImage(userController.getUser.photoUrl)
                                       : FileImage(File(imagePickerController
                                           .pickedImage!
                                           .path)) as ImageProvider);
                             },
-                          );
-                        }
-
-                        return const CustomCircleAvatar(
-                          backgroundImage: AssetImage('assets/images/user.png'),
-                        );
-                      },
-                    ),
+                          ),
                     TextButton(
                         onPressed: () {
                           imagePickerController.showBottomSheet(context);

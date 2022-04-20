@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:social_media/dependency_injection.dart';
+import 'package:social_media/models/user_model.dart' as model;
 
 class FirebaseAuthServices {
   final _auth = FirebaseAuth.instance;
@@ -36,44 +38,46 @@ class FirebaseAuthServices {
 
   //SIGN UP WITH EMAIL AND PASSWORD
 
-  Future<String> signupUser(
-      {required String email,
-      required String password,
-      BuildContext? context}) async {
-    String res = 'Something went wrong!';
-    try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        res = 'Success';
-        await sendEmailVerification(context);
-      } else {
-        res = 'Please fill all the fields!';
-      }
-    } catch (e) {
-      res = 'Invalid email or password!';
-    }
-    return res;
-  }
+  // Future<String> signupUser(
+  //     {required String email,
+  //     required String password,
+  //     BuildContext? context}) async {
+  //   String res = 'Something went wrong!';
+  //   try {
+  //     if (email.isNotEmpty || password.isNotEmpty) {
+  //       await _auth.createUserWithEmailAndPassword(
+  //           email: email, password: password);
+
+  //       res = 'Success';
+
+  //       // await sendEmailVerification(context);
+  //     } else {
+  //       res = 'Please fill all the fields!';
+  //     }
+  //   } catch (e) {
+  //     res = 'Invalid email or password!';
+  //   }
+  //   return res;
+  // }
 
   //EMAIL VERIFICATION
 
-  Future<void> sendEmailVerification(BuildContext? context) async {
-    try {
-      _auth.currentUser!.sendEmailVerification();
-      functionsController.showSnackBar(
-          context!, 'Email verification has been sent!');
-    } on FirebaseAuthException catch (e) {
-      functionsController.showSnackBar(context!, e.message!);
-    }
-  }
+  // Future<void> sendEmailVerification(BuildContext? context) async {
+  //   try {
+  //     _auth.currentUser!.sendEmailVerification();
+  //     functionsController.showSnackBar(
+  //         context!, 'Email verification has been sent!');
+  //   } on FirebaseAuthException catch (e) {
+  //     functionsController.showSnackBar(context!, e.message!);
+  //   }
+  // }
 
   //LOGIN WITH EMAIL AND PASSWORD
 
   Future<String> loginUser(
       {required String email,
       required String password,
-      BuildContext? context}) async {
+      required BuildContext context}) async {
     String res = 'Something went wrong!';
 
     try {
@@ -86,7 +90,7 @@ class FirebaseAuthServices {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        functionsController.showSnackBar(context!, 'User not found!');
+        functionsController.showSnackBar(context, 'User not found!');
       }
     } catch (e) {
       res = e.toString();
@@ -105,5 +109,15 @@ class FirebaseAuthServices {
     } on FirebaseAuthException catch (e) {
       functionsController.showSnackBar(context, e.message!);
     }
+  }
+
+  //GET USER DETAILS
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .get();
+    return model.User.fromSnap(documentSnapshot);
   }
 }

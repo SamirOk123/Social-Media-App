@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
-import 'package:social_media/views/authentication/auth_final_step.dart';
 import 'package:social_media/views/authentication/login_page.dart';
 import 'package:social_media/views/authentication/phone_number_signup.dart';
 import 'package:social_media/views/main/home_screen.dart';
@@ -12,22 +12,7 @@ import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 
 class SignUpPage extends StatelessWidget {
-  SignUpPage({Key? key}) : super(key: key);
-
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-//Method for Signing up
-  Future<void> signupUser(BuildContext context) async {
-    String res = await firebaseAuthServices.signupUser(
-        email: emailController.text, password: passwordController.text);
-
-    if (res == 'Success') {
-      Get.to(AuthFinalStep());
-    } else {
-      functionsController.showSnackBar(context, res);
-    }
-  }
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +34,9 @@ class SignUpPage extends StatelessWidget {
                     SizedBox(
                       height: 5.h,
                     ),
-                    InputField(
-                        controller: emailController,
+                    const InputField(
                         keyboardType: TextInputType.emailAddress,
-                        prefixIcon: const Icon(Icons.person),
+                        prefixIcon:  Icon(Icons.person),
                         hintText: 'Email'),
                     SizedBox(
                       height: 5.h,
@@ -62,7 +46,6 @@ class SignUpPage extends StatelessWidget {
                         prefixIcon: const Icon(Icons.key),
                         hintText: 'Password',
                         obscureText: obscureTextController.obscureText.value,
-                        controller: passwordController,
                         suffixIcon: IconButton(
                           onPressed: () {
                             obscureTextController.obscureText.value =
@@ -83,10 +66,11 @@ class SignUpPage extends StatelessWidget {
                     SizedBox(
                       height: 5.h,
                     ),
-                    CustomButton(
-                      label: 'Sign Up',
+                    CustomButton(label: signupController.isLoading.value==true? const CircularProgressIndicator(color: kWhite,): 
+                   const  Text('SignUp'),
+                     
                       onPressed: () {
-                        signupUser(context);
+                        // signupUser(context);
                       },
                     ),
                     SizedBox(
@@ -145,7 +129,7 @@ class SignUpPage extends StatelessWidget {
                       label: 'Alredy have an account?',
                       richText: 'Login',
                       onPressed: () {
-                        Get.to(LoginPage());
+                        Get.to(const LoginPage());
                       },
                     ),
                   ],

@@ -22,7 +22,7 @@ class ChatScreen extends StatelessWidget {
             ),
             Align(
               child: InputField(hintText: 'Message...',
-                containerHeight: 55,
+               
                 suffixIcon: TextButton(
                   onPressed: () {},
                   child: const Text('Send'),
@@ -41,11 +41,11 @@ class ChatScreen extends StatelessWidget {
             ),
             title: Text(
               'Prithviraj Sukumaran',
-              style: TextStyle(fontSize: 12.sp),
+              style: TextStyle(fontSize: 10.sp),
             ),
             subtitle: Text(
               'Active Now',
-              style: TextStyle(fontSize: 9.sp),
+              style: TextStyle(fontSize: 8.sp),
             ),
           ),
           backgroundColor: Colors.transparent,
