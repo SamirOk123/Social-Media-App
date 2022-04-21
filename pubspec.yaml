@@ -20,6 +20,7 @@ dependencies:
   get: ^4.6.1
   google_sign_in: ^5.2.4
   image_picker: ^0.8.5
+  intl: ^0.17.0
   pinput: ^2.2.7
   sizer: ^2.0.15
   uuid: ^3.0.6

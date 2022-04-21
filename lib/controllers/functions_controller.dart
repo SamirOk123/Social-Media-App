@@ -10,6 +10,4 @@ class FunctionsController extends GetxController {
       ),
     );
   }
-
-
 }

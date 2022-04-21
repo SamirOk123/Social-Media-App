@@ -56,6 +56,8 @@ class _NewPostState extends State<NewPost> {
     }
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

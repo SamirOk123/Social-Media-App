@@ -5,10 +5,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
+import 'package:social_media/views/authentication/login_page.dart';
 import 'package:social_media/widgets/custom_button.dart';
 import 'package:social_media/widgets/custom_circle_avatar.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
+import 'package:social_media/widgets/rich_text.dart';
 
 class AuthFinalStep extends StatefulWidget {
   const AuthFinalStep({Key? key}) : super(key: key);
@@ -44,8 +46,6 @@ class _AuthFinalStepState extends State<AuthFinalStep> {
 
   final locationController = TextEditingController();
 
-  
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -70,12 +70,12 @@ class _AuthFinalStepState extends State<AuthFinalStep> {
                     InputField(
                       controller: emailController,
                       hintText: 'Email',
-                      prefixIcon: const Icon(Icons.person),
+                      prefixIcon: const Icon(Icons.email_rounded),
                     ),
                     InputField(
                       controller: passwordController,
                       hintText: 'Password',
-                      prefixIcon: const Icon(Icons.person),
+                      prefixIcon: const Icon(Icons.key),
                     ),
                     InputField(
                       controller: usernameController,
@@ -136,22 +136,30 @@ class _AuthFinalStepState extends State<AuthFinalStep> {
                               )
                             : const Text('SignUp'),
                         onPressed: () async {
-                         if(pickedImage!=null){
+                          if (pickedImage != null) {
                             await signupController.signupUser(
-                              context: context,
-                              username: usernameController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
-                              bio: bioController.text,
-                              location: locationController.text,
-                              file: pickedImage!);
-                         
-                         }else{
-                           functionsController.showSnackBar(context, 'Please select an image!');
-                         }
+                                context: context,
+                                username: usernameController.text,
+                                email: emailController.text,
+                                password: passwordController.text,
+                                bio: bioController.text,
+                                location: locationController.text,
+                                file: pickedImage!);
+                          } else {
+                            functionsController.showSnackBar(
+                                context, 'Please select an image!');
+                          }
                         },
                       ),
                     ),
+                  SizedBox(height: 2.5.h,),
+
+                    CustomRichText(
+                        label: 'Alredy have an account?',
+                        onPressed: () {
+                          Get.to(const LoginPage());
+                        },
+                        richText: 'Login'),
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),

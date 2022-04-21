@@ -99,4 +99,25 @@ class FirebaseStorageServices {
     }
     return result;
   }
+
+  Future<void> likePost (String uid, String postId, List likes)async{
+
+    try{
+
+      if(likes.contains(uid)){
+       await FirebaseFirestore.instance.collection('posts').doc(postId).update({
+         'likes': FieldValue.arrayRemove([uid]),
+        });
+      }else{
+       await  FirebaseFirestore.instance.collection('posts').doc(postId).update({
+         'likes': FieldValue.arrayUnion([uid]),
+        });
+      }
+
+    }catch(e){
+      print(e.toString());
+
+      
+    }
+  }
 }

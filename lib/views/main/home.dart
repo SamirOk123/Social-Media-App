@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- Future<void> addData() async {
+  Future<void> addData() async {
     await userController.refreshUser();
   }
 
@@ -68,11 +68,13 @@ class _HomePageState extends State<HomePage> {
               LimitedBox(
                 maxHeight: 10.h,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 2.h,),
+                  padding: EdgeInsets.only(
+                    top: 2.h,
+                  ),
                   child: ListView.separated(
                     separatorBuilder: (context, index) {
                       return SizedBox(
-                        width:  1.4.h,
+                        width: 1.4.h,
                       );
                     },
                     itemCount: 15,
@@ -97,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 9,
               ),
               StreamBuilder(
@@ -107,23 +109,21 @@ class _HomePageState extends State<HomePage> {
                   builder: (context,
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                           snapshot) {
-                    if (snapshot.connectionState== ConnectionState.waiting) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } 
- 
-                  
-                   return  SizedBox(height: 500,width: double.infinity,
-                      child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            return Post(snap: snapshot.data!.docs[index].data(),
-                             
-                                 
-                            );
-                          },
-                        ),
+                    }
+
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        return Post(
+                          snap: snapshot.data!.docs[index].data(),
+                        );
+                      },
                     );
                   }),
             ],
