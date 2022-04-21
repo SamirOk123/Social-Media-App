@@ -4,9 +4,9 @@ import 'package:sizer/sizer.dart';
 import 'package:social_media/views/sub/others_profile.dart';
 
 class Post extends StatelessWidget {
-  const Post({Key? key, required this.imagePath}) : super(key: key);
+  const Post({Key? key, required this.snap}) : super(key: key);
 
-  final String imagePath;
+  final snap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class Post extends StatelessWidget {
           leading: CircleAvatar(
             backgroundColor: Colors.black.withOpacity(0.05),
             radius: 3.h,
-            backgroundImage: NetworkImage(imagePath),
+            backgroundImage: NetworkImage(snap['profImage']),
           ),
           trailing: IconButton(
             onPressed: () {},
@@ -27,24 +27,18 @@ class Post extends StatelessWidget {
               Icons.more_vert,
             ),
           ),
-          subtitle: Text(
-            '@dqsalmaan',
-            style: TextStyle(fontSize: 7.sp),
-          ),
           title: Text(
-            'Dulquer Salmaan',
+            snap['username'],
             style: TextStyle(fontSize: 10.sp),
           ),
         ),
         Container(
           width: double.infinity,
           height: 54.h,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(
-                    'https://slk4.sleck.net/wp-content/uploads/2021/07/cream-and-peach-feather-and-brushstroke-quote-instagram-post-template.png'),
-                fit: BoxFit.cover),
-            color: Colors.teal,
+                image: NetworkImage(snap['postUrl']), fit: BoxFit.cover),
+            color: Colors.black.withOpacity(0.04),
           ),
         ),
         Padding(
@@ -73,7 +67,7 @@ class Post extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(top: 2.h, left: 2.h, right: 2.h),
             child: Text(
-              'Hey... what\'s up guys?',
+              snap['description'],
               style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w400),
             ),
           ),

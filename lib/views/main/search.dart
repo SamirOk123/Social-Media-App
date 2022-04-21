@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
-import 'package:social_media/models/user_model.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 

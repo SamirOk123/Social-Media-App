@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -13,7 +11,7 @@ import 'package:social_media/widgets/post_followers_following_container.dart';
 import 'package:social_media/widgets/profile_description.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
+  const Profile({Key? key}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -69,7 +67,7 @@ class _ProfileState extends State<Profile> {
         actions: [
           TextButton(
             onPressed: () {
-             Get.to(EditProfile());
+             Get.to(const EditProfile());
             },
             child: const Text(
               'Edit Profile',

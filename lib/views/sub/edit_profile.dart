@@ -12,6 +12,8 @@ import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 
 class EditProfile extends StatefulWidget {
+  const EditProfile({Key? key}) : super(key: key);
+
  
 
   @override

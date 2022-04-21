@@ -68,24 +68,27 @@ class _HomePageState extends State<HomePage> {
               LimitedBox(
                 maxHeight: 10.h,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 2.h, left: 1.h, right: 1.h),
+                  padding: EdgeInsets.only(top: 2.h,),
                   child: ListView.separated(
                     separatorBuilder: (context, index) {
                       return SizedBox(
-                        width: 2.h,
+                        width:  1.4.h,
                       );
                     },
                     itemCount: 15,
                     itemBuilder: (context, index) {
-                      return DashedCircle(
-                        color: Colors.pink,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black.withOpacity(0.05),
-                            radius: 3.5.h,
-                            backgroundImage: const NetworkImage(
-                                'https://resize.indiatvnews.com/en/resize/newbucket/715_-/2022/01/mammootty-1642327286.jpg'),
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: DashedCircle(
+                          color: Colors.pink,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.black.withOpacity(0.05),
+                              radius: 3.5.h,
+                              backgroundImage: const NetworkImage(
+                                  'https://resize.indiatvnews.com/en/resize/newbucket/715_-/2022/01/mammootty-1642327286.jpg'),
+                            ),
                           ),
                         ),
                       );
@@ -94,6 +97,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 9,
+              ),
               StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('posts')
@@ -101,22 +107,24 @@ class _HomePageState extends State<HomePage> {
                   builder: (context,
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                           snapshot) {
-                    if (snapshot.hasData) {
-                      ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          return Post(
-                            imagePath:
-                                snapshot.data!.docs[index].data()['userName'],
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
+                    if (snapshot.connectionState== ConnectionState.waiting) {
                       return const Center(
-                        child: Text('No posts available!'),
+                        child: CircularProgressIndicator(),
                       );
-                    }
-                    return const SizedBox();
+                    } 
+ 
+                  
+                   return  SizedBox(height: 500,width: double.infinity,
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return Post(snap: snapshot.data!.docs[index].data(),
+                             
+                                 
+                            );
+                          },
+                        ),
+                    );
                   }),
             ],
           ),
