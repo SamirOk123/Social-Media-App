@@ -13,25 +13,26 @@ class ChatScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: CustomGradient(
-            child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: const[],
-              ),
-            ),
-            Align(
-              child: InputField(hintText: 'Message...',
-               
-                suffixIcon: TextButton(
-                  onPressed: () {},
-                  child: const Text('Send'),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: const [],
                 ),
               ),
-              alignment: Alignment.bottomCenter,
-            ),
-          ],
-        )),
+              Align(
+                child: InputField(
+                  hintText: 'Message...',
+                  suffixIcon: TextButton(
+                    onPressed: () {},
+                    child: const Text('Send'),
+                  ),
+                ),
+                alignment: Alignment.bottomCenter,
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
           centerTitle: true,
           title: ListTile(

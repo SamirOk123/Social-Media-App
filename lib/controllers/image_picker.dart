@@ -4,8 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:social_media/constants.dart';
 
 class ImagePickerController extends GetxController {
+  //IMAGE PICKER INSTANCE
   final ImagePicker imagePicker = ImagePicker();
 
+  //VARIABLE FOR STORING PICKED IMAGE
   XFile? pickedImage;
 
   //METHOD FOR GETTING IMAGE FROM DEVICE
@@ -60,11 +62,5 @@ class ImagePickerController extends GetxController {
         ),
       ),
     );
-  }
-
-  @override
-  void onClose() {
-    dispose();
-    super.onClose();
   }
 }

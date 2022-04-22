@@ -70,15 +70,18 @@ class LoginPage extends StatelessWidget {
                     SizedBox(
                       height: 5.h,
                     ),
-                   Obx(() =>  CustomButton(
-                      label: loginController.isLoading.value == true
+                    Obx(
+                      () => CustomButton(
+                        label: loginController.isLoading.value == true
                             ? const CircularProgressIndicator(
                                 color: kWhite,
-                              ): const Text('Login'),
-                      onPressed: () {
-                        loginController.loginUser(context);
-                      },
-                    ),),
+                              )
+                            : const Text('Login'),
+                        onPressed: () {
+                          loginController.loginUser(context);
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -86,7 +89,7 @@ class LoginPage extends StatelessWidget {
                       label: 'Don\'t have an account yet?',
                       richText: 'Signup',
                       onPressed: () {
-                        Get.to(const AuthFinalStep());
+                        Get.to(SignUp());
                       },
                     ),
                   ],

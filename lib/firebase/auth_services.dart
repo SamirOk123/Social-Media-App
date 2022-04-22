@@ -7,11 +7,12 @@ import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/models/user_model.dart' as model;
 
 class FirebaseAuthServices {
+
+  //INSTANCES
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
 
   //METHOD FOR SIGNING IN WITH GOOGLE
-
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
@@ -30,7 +31,8 @@ class FirebaseAuthServices {
       functionsController.showSnackBar(context, 'Please select an account!');
     }
   }
-
+  
+  //SIGN OUT
   Future<void> signOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
@@ -73,7 +75,6 @@ class FirebaseAuthServices {
   // }
 
   //LOGIN WITH EMAIL AND PASSWORD
-
   Future<String> loginUser(
       {required String email,
       required String password,
@@ -99,7 +100,6 @@ class FirebaseAuthServices {
   }
 
   //FACEBOOK SIGNIN
-
   Future<void> signinWithFacebook(BuildContext context) async {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
@@ -111,7 +111,7 @@ class FirebaseAuthServices {
     }
   }
 
-  //GET USER DETAILS
+  //GETTING CURRENT USER DETAILS
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance

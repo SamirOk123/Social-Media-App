@@ -11,30 +11,23 @@ import 'package:social_media/widgets/custom_circle_avatar.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
-
- 
-
-  @override
-  State<EditProfile> createState() => _EditProfileState();
-}
-
-class _EditProfileState extends State<EditProfile> {
+class EditProfile extends StatelessWidget {
+  EditProfile({Key? key}) : super(key: key);
+  
+  
   //TEXT EDITING CONTROLLERS
-
   late final userNameController = TextEditingController()
     ..text = userController.getUser.userName;
 
-  late final bioController = TextEditingController()..text = userController.getUser.bio;
+  late final bioController = TextEditingController()
+    ..text = userController.getUser.bio;
 
   late final locationController = TextEditingController()
     ..text = userController.getUser.location;
 
+  
   //IMAGE PICKER CONTROLLER DEPENDENCY INJECTION
-
-  ImagePickerController imagePickerController =
-      Get.put(ImagePickerController());
+  final imagePickerController = Get.put(ImagePickerController());
 
   @override
   Widget build(BuildContext context) {
@@ -98,17 +91,16 @@ class _EditProfileState extends State<EditProfile> {
                 child: Column(
                   children: [
                     GetBuilder<ImagePickerController>(
-                            builder: (controller) {
-                              return CustomCircleAvatar(
-                                  backgroundImage: imagePickerController
-                                              .pickedImage ==
-                                          null
-                                      ? NetworkImage(userController.getUser.photoUrl)
-                                      : FileImage(File(imagePickerController
-                                          .pickedImage!
-                                          .path)) as ImageProvider);
-                            },
-                          ),
+                      builder: (controller) {
+                        return CustomCircleAvatar(
+                            backgroundImage: imagePickerController
+                                        .pickedImage ==
+                                    null
+                                ? NetworkImage(userController.getUser.photoUrl)
+                                : FileImage(File(imagePickerController
+                                    .pickedImage!.path)) as ImageProvider);
+                      },
+                    ),
                     TextButton(
                         onPressed: () {
                           imagePickerController.showBottomSheet(context);

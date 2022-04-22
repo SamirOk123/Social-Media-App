@@ -11,13 +11,15 @@ import 'package:social_media/models/post_model.dart' as model;
 import 'package:uuid/uuid.dart';
 
 class FirebaseStorageServices {
+
+  //INSTANCES
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
-
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? url;
 
-//METHOD FOR UPLOADING IMAGE
+  
+  //METHOD FOR UPLOADING IMAGE
   Future<void> uploadFile(String filePath, String fileName,
       BuildContext context, String uploadPath) async {
     File file = File(filePath);
@@ -28,32 +30,8 @@ class FirebaseStorageServices {
       functionsController.showSnackBar(context, e.message!);
     }
   }
-
-//METHOD FOR RETRIEVING IMAGE
-
-  Stream getImage(BuildContext context, String path) async* {
-    try {
-      await getUrl(path);
-      yield url;
-    } catch (e) {
-      functionsController.showSnackBar(context, 'Something went wrong!');
-      yield null;
-    }
-  }
-
-  Future<void> getUrl(String path) async {
-    url = await storage.ref().child(path).getDownloadURL();
-    debugPrint(url.toString());
-  }
-
-  // // METHOD FOR CREATING A USER
-
-  // Future createUser(User newUser) async {
-  //   final docUser = FirebaseFirestore.instance.collection('users').doc();
-  //   final json = newUser.toJson();
-  //   await docUser.set(json);
-  // }
-
+  
+  //UPLOAD IMAGE METHOD
   Future<String> uploadImageToStorage(
       String childName, XFile file, bool isPost) async {
     Reference reference =
@@ -61,7 +39,7 @@ class FirebaseStorageServices {
 
     if (isPost) {
       String id = const Uuid().v1();
-     reference = reference.child(id);
+      reference = reference.child(id);
     }
     UploadTask uploadTask = reference.putFile(File(file.path));
     TaskSnapshot snap = await uploadTask;
@@ -99,25 +77,27 @@ class FirebaseStorageServices {
     }
     return result;
   }
-
-  Future<void> likePost (String uid, String postId, List likes)async{
-
-    try{
-
-      if(likes.contains(uid)){
-       await FirebaseFirestore.instance.collection('posts').doc(postId).update({
-         'likes': FieldValue.arrayRemove([uid]),
+  
+  //LIKE POST METHOD
+  Future<void> likePost(String uid, String postId, List likes) async {
+    try {
+      if (likes.contains(uid)) {
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(postId)
+            .update({
+          'likes': FieldValue.arrayRemove([uid]),
         });
-      }else{
-       await  FirebaseFirestore.instance.collection('posts').doc(postId).update({
-         'likes': FieldValue.arrayUnion([uid]),
+      } else {
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(postId)
+            .update({
+          'likes': FieldValue.arrayUnion([uid]),
         });
       }
-
-    }catch(e){
+    } catch (e) {
       print(e.toString());
-
-      
     }
   }
 }

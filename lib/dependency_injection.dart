@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:social_media/controllers/functions_controller.dart';
-import 'package:social_media/controllers/image_picker.dart';
 import 'package:social_media/controllers/login_controller.dart';
 import 'package:social_media/controllers/navigation.dart';
 import 'package:social_media/controllers/obscure_text.dart';
@@ -14,7 +13,6 @@ ObscureTextController obscureTextController = Get.put(ObscureTextController());
 NavigationController navigationController = Get.put(NavigationController());
 PhoneNumberController phoneNumberController = Get.put(PhoneNumberController());
 FunctionsController functionsController = Get.put(FunctionsController());
-ImagePickerController imagePickerController = Get.put(ImagePickerController());
 SignupController signupController = Get.put(SignupController());
 LoginController loginController = Get.put(LoginController());
 UserController userController = Get.put(UserController());

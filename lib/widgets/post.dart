@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/sub/others_profile.dart';
 import 'package:social_media/widgets/like_animation.dart';
@@ -67,14 +68,14 @@ class _PostState extends State<Post> {
                 ),
               ),
               AnimatedOpacity(
-                duration: Duration(
+                duration: const Duration(
                   milliseconds: 200,
                 ),
                 opacity: isLikeAnimating ? 1 : 0,
                 child: LikeAnimation(
-                  child: Icon(Icons.favorite, color: Colors.white, size: 120),
+                  child: const Icon(Icons.favorite, color: kWhite, size: 120),
                   isAnimating: isLikeAnimating,
-                  duration: Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 400),
                   onEnd: () {
                     setState(() {
                       isLikeAnimating = false;
@@ -110,7 +111,7 @@ class _PostState extends State<Post> {
                             },
                             child: widget.snap['likes']
                                     .contains(userController.getUser.uid)
-                                ? const Icon(Icons.favorite,color: Colors.red)
+                                ? const Icon(Icons.favorite, color: Colors.red)
                                 : const Icon(Icons.favorite_border_outlined),
                           ),
                         ),

@@ -25,7 +25,6 @@ class ShimmerSkelton extends StatelessWidget {
 }
 
 //SKELTON OF USER INFO
-
 class UserInfoSkelton extends StatelessWidget {
   const UserInfoSkelton({
     Key? key,

@@ -5,9 +5,15 @@ import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/authentication/otp_verfication.dart';
 
 class PhoneNumberController extends GetxController {
+
+  //TEXT EDITING CONTROLLERS
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  //FIREBASE AUTH INSTANCE
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  
   String verificationId = '';
 
   Future<void> getOtp(

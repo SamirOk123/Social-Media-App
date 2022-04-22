@@ -20,7 +20,7 @@ class Search extends StatelessWidget {
               if (snapshot.hasError) {
                 return const Center(
                   child: Text(
-                    'No data',
+                    'Nothing to show!',
                     style: TextStyle(color: kBlack),
                   ),
                 );
@@ -77,15 +77,4 @@ class Search extends StatelessWidget {
       ),
     );
   }
-
-  // Future<User?> readUser() async {
-  //   final docUser = FirebaseFirestore.instance.collection('users').doc();
-  //   final snapshot = await docUser.get();
-
-  //   if (snapshot.exists) {
-  //     return User.fromJson(snapshot.data()!);
-  //   } else {
-  //     return null;
-  //   }
-  // }
 }

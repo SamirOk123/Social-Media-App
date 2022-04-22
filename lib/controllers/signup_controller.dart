@@ -8,10 +8,15 @@ import 'package:social_media/models/user_model.dart' as model;
 import 'package:social_media/views/main/home_screen.dart';
 
 class SignupController extends GetxController {
+
+  //INSTANCES
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   RxBool isLoading = false.obs;
 
+
+  //METHOD FOR SIGNUP
   Future<String> signupUser(
       {required String username,
       required String email,
@@ -26,8 +31,7 @@ class SignupController extends GetxController {
           email.isNotEmpty ||
           password.isNotEmpty ||
           bio.isNotEmpty ||
-          location.isNotEmpty 
-         ) {
+          location.isNotEmpty) {
         isLoading.value = true;
 
         UserCredential credential = await _auth.createUserWithEmailAndPassword(

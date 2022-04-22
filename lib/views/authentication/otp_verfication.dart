@@ -26,7 +26,6 @@ class OtpVerificationPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Column(
                   children: [
-                   
                     Center(
                       child: Text(
                         'Twitch!',
@@ -52,8 +51,8 @@ class OtpVerificationPage extends StatelessWidget {
                             fontSize: 20,
                             color: Color.fromRGBO(30, 60, 87, 1),
                             fontWeight: FontWeight.w600),
-                        decoration: BoxDecoration(color: kWhite,
-                         
+                        decoration: BoxDecoration(
+                          color: kWhite,
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
@@ -62,8 +61,11 @@ class OtpVerificationPage extends StatelessWidget {
                     SizedBox(
                       height: 10.h,
                     ),
-                    CustomButton(label:const Text('Verify'), onPressed: (){verifyOtp(context);}),
-                    
+                    CustomButton(
+                        label: const Text('Verify'),
+                        onPressed: () {
+                          verifyOtp(context);
+                        }),
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
@@ -75,17 +77,17 @@ class OtpVerificationPage extends StatelessWidget {
     );
   }
 
-  //Method for verifying otp
+  //METHOD FOR OTP VERIFICATION
   Future verifyOtp(BuildContext context) async {
     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
         verificationId: phoneNumberController.verificationId,
         smsCode: otpController.text);
-    signInWithPhoneAuthCredential(phoneAuthCredential,context);
+    signInWithPhoneAuthCredential(phoneAuthCredential, context);
   }
 
-// Method for signing in
+//METHOD FOR SIGNING IN
   Future signInWithPhoneAuthCredential(
-      PhoneAuthCredential phoneAuthCredential,BuildContext? context) async {
+      PhoneAuthCredential phoneAuthCredential, BuildContext? context) async {
     try {
       final authCredential = await phoneNumberController.auth
           .signInWithCredential(phoneAuthCredential);
@@ -93,8 +95,7 @@ class OtpVerificationPage extends StatelessWidget {
         Get.offAll(const HomeScreen());
       }
     } on FirebaseAuthException catch (e) {
-      functionsController.showSnackBar(
-         context!, e.toString());
+      functionsController.showSnackBar(context!, e.toString());
     }
   }
 }
