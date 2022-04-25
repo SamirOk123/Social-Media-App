@@ -23,6 +23,7 @@ dependencies:
   image_cropper: ^1.5.1
   image_picker: ^0.8.5
   intl: ^0.17.0
+  percent_indicator: ^4.0.0
   pinput: ^2.2.7
   sizer: ^2.0.15
   uuid: ^3.0.6

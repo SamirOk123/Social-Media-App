@@ -7,6 +7,7 @@ import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/main/messages.dart';
 import 'package:social_media/views/sub/new_post.dart';
+import 'package:social_media/views/sub/story_page.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/post.dart';
 
@@ -86,11 +87,16 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.pink,
                           child: Padding(
                             padding: const EdgeInsets.all(2),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.black.withOpacity(0.05),
-                              radius: 3.5.h,
-                              backgroundImage: const NetworkImage(
-                                  'https://resize.indiatvnews.com/en/resize/newbucket/715_-/2022/01/mammootty-1642327286.jpg'),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(() => const StoryPage());
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black.withOpacity(0.05),
+                                radius: 3.5.h,
+                                backgroundImage: NetworkImage(
+                                    userController.getUser.photoUrl),
+                              ),
                             ),
                           ),
                         ),

@@ -36,7 +36,7 @@ class _ProfileState extends State<Profile> {
   }
 
   //FETCHING DATA OF AN USER
-  getData() async {
+  void getData() async {
     setState(() {
       isLoading = true;
     });
@@ -84,7 +84,7 @@ class _ProfileState extends State<Profile> {
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: FirebaseAuth.instance.currentUser!.uid == widget.uid
+                leading: userController.getUser.uid == widget.uid
                     ? IconButton(
                         icon: const Icon(
                           Icons.logout_outlined,
@@ -114,11 +114,23 @@ class _ProfileState extends State<Profile> {
                           ? Row(
                               children: [
                                 TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Following',
-                                      style: TextStyle(color: kBlack),
-                                    )),
+                                  onPressed: () async {
+                                    await firebaseStorageServices.followUser(
+                                        uid: FirebaseAuth
+                                            .instance.currentUser!.uid,
+                                        followId: userData['uid'],
+                                        context: context);
+
+                                    setState(() {
+                                      isFollowing = false;
+                                      followers--;
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Following',
+                                    style: TextStyle(color: kBlack),
+                                  ),
+                                ),
                                 TextButton(
                                     onPressed: () =>
                                         Get.to(() => const ChatScreen()),
@@ -131,7 +143,18 @@ class _ProfileState extends State<Profile> {
                           : Row(
                               children: [
                                 TextButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      await firebaseStorageServices.followUser(
+                                          uid: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          followId: userData['uid'],
+                                          context: context);
+
+                                      setState(() {
+                                        isFollowing = true;
+                                        followers++;
+                                      });
+                                    },
                                     child: const Text(
                                       'Follow',
                                       style: TextStyle(color: kBlack),

@@ -172,4 +172,47 @@ class FirebaseStorageServices {
   //     print(e.toString());
   //   }
   // }
+
+  //FOLLOW USER
+  Future<void> followUser(
+      {required String uid,
+      required String followId,
+      required BuildContext context}) async {
+    try {
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      List following = (snapshot.data()! as dynamic)['following'];
+      if (following.contains(followId)) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(followId)
+            .update({
+          'followers': FieldValue.arrayRemove([uid]),
+        });
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(followId)
+            .update({
+          'following': FieldValue.arrayRemove([followId]),
+        });
+      } else {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(followId)
+            .update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .update({
+          'following': FieldValue.arrayUnion([followId]),
+        });
+      }
+    } catch (e) {
+      functionsController.showSnackBar(context, e.toString());
+    }
+  }
 }
