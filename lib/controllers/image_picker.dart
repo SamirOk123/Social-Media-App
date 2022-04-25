@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media/constants.dart';
 
@@ -7,15 +9,52 @@ class ImagePickerController extends GetxController {
   //IMAGE PICKER INSTANCE
   final ImagePicker imagePicker = ImagePicker();
 
-  //VARIABLE FOR STORING PICKED IMAGE
-  XFile? pickedImage;
+  //VARIABLE TO STORE PICKED IMAGE
+  File? pickedImage;
 
-  //METHOD FOR GETTING IMAGE FROM DEVICE
+  //GETTING IMAGE FROM DEVICE
   Future<void> getImage(ImageSource source) async {
     final pickedFile = await imagePicker.pickImage(source: source);
 
-    pickedImage = pickedFile;
+    File file = File(pickedFile!.path);
+    pickedImage = file;
     update();
+  }
+
+  //IMAGE CROP METHOD
+  Future<void> cropImage() async {
+    File? croppedFile = await ImageCropper().cropImage(
+      sourcePath: pickedImage!.path,
+      aspectRatioPresets: Platform.isAndroid
+          ? [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ]
+          : [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+            ],
+      androidUiSettings: const AndroidUiSettings(
+          activeControlsWidgetColor: kBlue,
+          toolbarTitle: 'Crop Image',
+          toolbarColor: kBlue,
+          toolbarWidgetColor: kWhite,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+    );
+    if (croppedFile != null) {
+      pickedImage = croppedFile;
+      update();
+    }
   }
 
   //BOTTOM SHEET
@@ -45,6 +84,7 @@ class ImagePickerController extends GetxController {
                 ),
                 onPressed: () {
                   getImage(ImageSource.camera);
+                  Get.back();
                 }),
             TextButton.icon(
                 label: const Text(
@@ -57,6 +97,7 @@ class ImagePickerController extends GetxController {
                 ),
                 onPressed: () {
                   getImage(ImageSource.gallery);
+                  Get.back();
                 }),
           ],
         ),

@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/models/user_model.dart' as model;
 import 'package:social_media/views/main/home_screen.dart';
@@ -23,7 +24,7 @@ class SignupController extends GetxController {
       required String password,
       required String bio,
       required String location,
-      required XFile file,
+      required File file,
       required BuildContext context}) async {
     String result = 'Some error occured!';
     try {

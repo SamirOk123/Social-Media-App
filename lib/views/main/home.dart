@@ -18,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   //GETTING CURRENT USER
   Future<void> addData() async {
     await userController.refreshUser();
@@ -105,8 +104,10 @@ class _HomePageState extends State<HomePage> {
                 height: 9,
               ),
               StreamBuilder(
-                stream:
-                    FirebaseFirestore.instance.collection('posts').snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('posts')
+                    .orderBy('datePublished', descending: true)
+                    .snapshots(),
                 builder: (context,
                     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                         snapshot) {

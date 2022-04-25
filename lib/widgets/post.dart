@@ -1,30 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
-import 'package:social_media/views/sub/others_profile.dart';
+import 'package:social_media/views/main/profile.dart';
+import 'package:social_media/views/sub/comments.dart';
 import 'package:social_media/widgets/like_animation.dart';
 
 class Post extends StatefulWidget {
   const Post({Key? key, required this.snap}) : super(key: key);
 
-  final snap;
+  final dynamic snap;
 
   @override
   State<Post> createState() => _PostState();
 }
 
 class _PostState extends State<Post> {
+  int commentCount = 0;
   bool isLikeAnimating = false;
+
+  @override
+  void initState() {
+    getCommentsCount();
+    super.initState();
+  }
+
+  //GETTING THE LENGTH OF COMMENTS LIST
+  void getCommentsCount() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      commentCount = snapshot.docs.length;
+    } catch (e) {
+      functionsController.showSnackBar(context, e.toString());
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
           onTap: () {
-            Get.to(() => const OthersProfile());
+            Get.to(
+              () => Profile(uid: widget.snap['uid']),
+            );
           },
           leading: CircleAvatar(
             backgroundColor: Colors.black.withOpacity(0.05),
@@ -32,7 +59,9 @@ class _PostState extends State<Post> {
             backgroundImage: NetworkImage(widget.snap['profImage']),
           ),
           trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              // firebaseStorageServices.deletePost(widget.snap['postId']);
+            },
             icon: const Icon(
               Icons.more_vert,
             ),
@@ -118,7 +147,14 @@ class _PostState extends State<Post> {
                         SizedBox(
                           width: 4.w,
                         ),
-                        const Icon(Icons.chat),
+                        InkWell(
+                          child: const Icon(Icons.chat),
+                          onTap: () {
+                            Get.to(() => CommentsScreen(
+                                  snap: widget.snap,
+                                ));
+                          },
+                        ),
                         SizedBox(
                           width: 4.w,
                         ),
@@ -163,9 +199,19 @@ class _PostState extends State<Post> {
                   height: 1.h,
                 ),
                 Align(
-                  child: Text(
-                    'View all 100 comments',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 11.sp),
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(() => CommentsScreen(
+                            snap: widget.snap,
+                          ));
+                    },
+                    child: Text(
+                      commentCount == 0
+                          ? '0 Comments'
+                          : 'View all $commentCount comments',
+                      style:
+                          TextStyle(color: Colors.grey[600], fontSize: 11.sp),
+                    ),
                   ),
                   alignment: Alignment.centerLeft,
                 ),

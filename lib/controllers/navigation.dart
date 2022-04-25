@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:social_media/views/main/home.dart';
 import 'package:social_media/views/main/notifications.dart';
@@ -9,7 +10,9 @@ class NavigationController extends GetxController {
     const HomePage(),
     const Search(),
     const Notifications(),
-    const Profile()
+    Profile(
+      uid: FirebaseAuth.instance.currentUser!.uid,
+    )
   ].obs;
   RxInt selectedIndex = 0.obs;
 

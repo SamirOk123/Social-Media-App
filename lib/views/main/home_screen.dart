@@ -15,8 +15,8 @@ class HomeScreen extends StatelessWidget {
           () => BottomNavigationBar(
             currentIndex: navigationController.selectedIndex.value,
             onTap: navigationController.onItemTapped,
-            unselectedItemColor: kBlack,
-            selectedItemColor: Colors.grey,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: kBlack,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             items: const <BottomNavigationBarItem>[

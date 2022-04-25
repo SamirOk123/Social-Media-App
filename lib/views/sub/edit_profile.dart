@@ -13,8 +13,7 @@ import 'package:social_media/widgets/input_field.dart';
 
 class EditProfile extends StatelessWidget {
   EditProfile({Key? key}) : super(key: key);
-  
-  
+
   //TEXT EDITING CONTROLLERS
   late final userNameController = TextEditingController()
     ..text = userController.getUser.userName;
@@ -25,7 +24,6 @@ class EditProfile extends StatelessWidget {
   late final locationController = TextEditingController()
     ..text = userController.getUser.location;
 
-  
   //IMAGE PICKER CONTROLLER DEPENDENCY INJECTION
   final imagePickerController = Get.put(ImagePickerController());
 
@@ -36,18 +34,16 @@ class EditProfile extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-              onPressed: () {
+              onPressed: () async{
                 //UPLOADING IMAGE
                 if (imagePickerController.pickedImage != null) {
-                  final filePath = imagePickerController.pickedImage!.path;
-                  // final fileName = imagePickerController.pickedImage!.name;
-                  const fileName = 'profilePic.jpg';
-                  const uploadPath = 'profile/';
+                  // final filePath = imagePickerController.pickedImage!.path;
+                  // // final fileName = imagePickerController.pickedImage!.name;
+                  // final fileName = userController.getUser.uid;
+                  // const uploadPath = 'profilePics/';
 
-                  firebaseStorageServices
-                      .uploadFile(filePath, fileName, context, uploadPath)
-                      .then((value) => functionsController.showSnackBar(
-                          context, 'Upload completed'));
+                 await firebaseStorageServices.uploadImageToStorage(
+            'ProfilePics', imagePickerController.pickedImage!, false);
                 } else {
                   const SizedBox();
                 }
@@ -131,16 +127,16 @@ class EditProfile extends StatelessWidget {
     );
   }
 
-//METHOD FOR UPDATE USER INFO
+  //UPDATE USER INFO
   void updateInfo({
     required String userName,
     required String bio,
     required String location,
   }) {
-    final docUser = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('users')
-        .doc('n55aTb73sBgAJtcV8DuT');
-    docUser.update(
+        .doc(userController.getUser.uid)
+        .update(
       {
         "userName": userName,
         "bio": bio,

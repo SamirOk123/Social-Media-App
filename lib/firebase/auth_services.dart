@@ -35,7 +35,7 @@ class FirebaseAuthServices {
   //SIGN OUT
   Future<void> signOut() async {
     await _auth.signOut();
-    await _googleSignIn.signOut();
+    // await _googleSignIn.signOut();
   }
 
   //SIGN UP WITH EMAIL AND PASSWORD

@@ -20,6 +20,7 @@ class LoginController extends GetxController {
       isLoading.value = false;
       Get.offAll(const HomeScreen());
     } else {
+      isLoading.value = false;
       functionsController.showSnackBar(context, res);
     }
   }
