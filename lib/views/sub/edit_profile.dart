@@ -34,16 +34,11 @@ class EditProfile extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-              onPressed: () async{
+              onPressed: () async {
                 //UPLOADING IMAGE
                 if (imagePickerController.pickedImage != null) {
-                  // final filePath = imagePickerController.pickedImage!.path;
-                  // // final fileName = imagePickerController.pickedImage!.name;
-                  // final fileName = userController.getUser.uid;
-                  // const uploadPath = 'profilePics/';
-
-                 await firebaseStorageServices.uploadImageToStorage(
-            'ProfilePics', imagePickerController.pickedImage!, false);
+                  await firebaseStorageServices.uploadImageToStorage(
+                      'ProfilePics', imagePickerController.pickedImage!, false);
                 } else {
                   const SizedBox();
                 }

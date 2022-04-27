@@ -4,7 +4,7 @@ import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/main/home_screen.dart';
 
 class LoginController extends GetxController {
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   RxBool isLoading = false.obs;
@@ -14,7 +14,7 @@ class LoginController extends GetxController {
     isLoading.value = true;
     String res = await firebaseAuthServices.loginUser(
         context: context,
-        email: emailController.text,
+        username: usernameController.text,
         password: passwordController.text);
     if (res == 'Success!') {
       isLoading.value = false;

@@ -37,10 +37,9 @@ class LoginPage extends StatelessWidget {
                       height: 10.h,
                     ),
                     InputField(
-                        controller: loginController.emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: const Icon(Icons.email),
-                        hintText: 'Email'),
+                        controller: loginController.usernameController,
+                        prefixIcon: const Icon(Icons.person),
+                        hintText: 'Username'),
                     SizedBox(
                       height: 5.h,
                     ),

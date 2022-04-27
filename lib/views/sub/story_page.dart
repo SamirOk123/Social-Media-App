@@ -101,7 +101,7 @@ class _StoryPageState extends State<StoryPage> {
             children: [
               stories[currentStoryIndex],
               Padding(
-                padding:  EdgeInsets.only(top: 3.h),
+                padding:  EdgeInsets.only(top: 2.h),
                 child: Row(
                   children: [
                     Expanded(
@@ -123,7 +123,7 @@ class _StoryPageState extends State<StoryPage> {
                 ),
               ),
               Padding(
-                padding:  EdgeInsets.only(top: 5.h),
+                padding:  EdgeInsets.only(top: 3.h),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundImage:

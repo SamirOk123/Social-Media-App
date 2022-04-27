@@ -16,6 +16,7 @@ class FirebaseStorageServices {
       firebase_storage.FirebaseStorage.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? url;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //METHOD FOR UPLOADING AN IMAGE
   Future<void> uploadFile(String filePath, String fileName,
@@ -65,10 +66,7 @@ class FirebaseStorageServices {
           postId: postId,
           datePublished: DateTime.now(),
           likes: []);
-      FirebaseFirestore.instance
-          .collection('posts')
-          .doc(postId)
-          .set(post.toJson());
+      _firestore.collection('posts').doc(postId).set(post.toJson());
       result = 'success';
     } catch (e) {
       result = e.toString();
@@ -80,17 +78,11 @@ class FirebaseStorageServices {
   Future<void> likePost(String uid, String postId, List likes) async {
     try {
       if (likes.contains(uid)) {
-        await FirebaseFirestore.instance
-            .collection('posts')
-            .doc(postId)
-            .update({
+        await _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayRemove([uid]),
         });
       } else {
-        await FirebaseFirestore.instance
-            .collection('posts')
-            .doc(postId)
-            .update({
+        await _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid]),
         });
       }
@@ -104,7 +96,7 @@ class FirebaseStorageServices {
       String uid, String postId, List likes, String commentId) async {
     try {
       if (likes.contains(uid)) {
-        await FirebaseFirestore.instance
+        await _firestore
             .collection('posts')
             .doc(postId)
             .collection('comments')
@@ -113,7 +105,7 @@ class FirebaseStorageServices {
           'likes': FieldValue.arrayRemove([uid]),
         });
       } else {
-        await FirebaseFirestore.instance
+        await _firestore
             .collection('posts')
             .doc(postId)
             .collection('comments')
@@ -148,7 +140,7 @@ class FirebaseStorageServices {
             likes: [],
             commentId: commentId,
             username: username);
-        await FirebaseFirestore.instance
+        await _firestore
             .collection('posts')
             .doc(postId)
             .collection('comments')
@@ -173,41 +165,29 @@ class FirebaseStorageServices {
   //   }
   // }
 
-  //FOLLOW USER
+  //FOLLOW / UNFOLLOW 
   Future<void> followUser(
       {required String uid,
       required String followId,
       required BuildContext context}) async {
     try {
       DocumentSnapshot snapshot =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+          await _firestore.collection('users').doc(uid).get();
       List following = (snapshot.data()! as dynamic)['following'];
       if (following.contains(followId)) {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(followId)
-            .update({
+        await _firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayRemove([uid]),
         });
 
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(followId)
-            .update({
+        await _firestore.collection('users').doc(followId).update({
           'following': FieldValue.arrayRemove([followId]),
         });
       } else {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(followId)
-            .update({
+        await _firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayUnion([uid]),
         });
 
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .update({
+        await _firestore.collection('users').doc(uid).update({
           'following': FieldValue.arrayUnion([followId]),
         });
       }

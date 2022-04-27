@@ -57,10 +57,28 @@ class SignUp extends StatelessWidget {
                       hintText: 'Email',
                       prefixIcon: const Icon(Icons.email_rounded),
                     ),
-                    InputField(
-                      controller: passwordController,
-                      hintText: 'Password',
-                      prefixIcon: const Icon(Icons.key),
+                     Obx(
+                      () => InputField(
+                        prefixIcon: const Icon(Icons.key),
+                        hintText: 'Password',
+                        obscureText: obscureTextController.obscureText.value,
+                        controller: passwordController,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            obscureTextController.obscureText.value =
+                                !obscureTextController.obscureText.value;
+                          },
+                          icon: obscureTextController.obscureText.value
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  size: 3.h,
+                                )
+                              : Icon(
+                                  Icons.visibility,
+                                  size: 3.h,
+                                ),
+                        ),
+                      ),
                     ),
                     InputField(
                       controller: usernameController,

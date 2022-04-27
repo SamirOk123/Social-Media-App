@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,15 +8,13 @@ import 'package:social_media/models/user_model.dart' as model;
 import 'package:social_media/views/main/home_screen.dart';
 
 class SignupController extends GetxController {
-
   //INSTANCES
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   RxBool isLoading = false.obs;
 
-
-  //METHOD FOR SIGNUP
+  //SIGNUP WITH EMAIL
   Future<String> signupUser(
       {required String username,
       required String email,
@@ -41,6 +38,7 @@ class SignupController extends GetxController {
             'ProfilePics', file, false);
 
         model.User user = model.User(
+          email: email,
             bio: bio,
             uid: credential.user!.uid,
             followers: [],

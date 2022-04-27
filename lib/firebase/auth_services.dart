@@ -7,10 +7,10 @@ import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/models/user_model.dart' as model;
 
 class FirebaseAuthServices {
-
   //INSTANCES
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //METHOD FOR SIGNING IN WITH GOOGLE
   Future<void> signInWithGoogle(BuildContext context) async {
@@ -31,7 +31,7 @@ class FirebaseAuthServices {
       functionsController.showSnackBar(context, 'Please select an account!');
     }
   }
-  
+
   //SIGN OUT
   Future<void> signOut() async {
     await _auth.signOut();
@@ -74,17 +74,21 @@ class FirebaseAuthServices {
   //   }
   // }
 
-  //LOGIN WITH EMAIL AND PASSWORD
+  //LOGIN WITH USERNAME AND PASSWORD
   Future<String> loginUser(
-      {required String email,
+      {required String username,
       required String password,
       required BuildContext context}) async {
     String res = 'Something went wrong!';
 
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
+      if (username.isNotEmpty || password.isNotEmpty) {
+        QuerySnapshot snap = await _firestore
+            .collection('users')
+            .where('userName', isEqualTo: username)
+            .get();
         await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+            email: snap.docs[0]['email'], password: password);
         res = 'Success!';
       } else {
         res = 'Please fill all the fields';
