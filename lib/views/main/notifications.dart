@@ -25,11 +25,10 @@ class Notifications extends StatelessWidget {
               leading: CircleAvatar(
                 backgroundColor: Colors.black.withOpacity(0.04),
                 radius: 3.5.h,
-                backgroundImage: const NetworkImage(
-                    'https://images.indianexpress.com/2016/05/mohanlal-7591.jpg'),
+                backgroundImage: const AssetImage('assets/images/samir.jpg'),
               ),
               title: Text(
-                'Mohanlal liked your photo',
+                'Samir liked your photo',
                 style: TextStyle(fontSize: 10.sp),
               ),
               trailing: Container(

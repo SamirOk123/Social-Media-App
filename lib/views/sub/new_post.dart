@@ -57,7 +57,7 @@ class _NewPostState extends State<NewPost> {
             appBar: AppBar(
               title: const Text(
                 'New Post',
-                style: TextStyle(color: kBlack),
+                style: kHeaderStyle,
               ),
               actions: [
                 imagePickerController.pickedImage != null
@@ -65,9 +65,13 @@ class _NewPostState extends State<NewPost> {
                         onPressed: () {
                           imagePickerController.cropImage();
                         },
-                        icon: Icon(Icons.crop, color: kBlack,size: 3.h,),
+                        icon: Icon(
+                          Icons.crop,
+                          color: kBlack,
+                          size: 3.h,
+                        ),
                       )
-                    : const SizedBox(), 
+                    : const SizedBox(),
                 TextButton(
                   child: const Text(
                     'Post',
@@ -138,15 +142,19 @@ class _NewPostState extends State<NewPost> {
                                       .showBottomSheet(context);
                                 },
                               )
-                            : Container(
-                                width: 33,
-                                height: 33,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: FileImage(
-                                      File(imagePickerController
-                                          .pickedImage!.path),
+                            : InkWell(
+                                onTap: () => imagePickerController
+                                    .showBottomSheet(context),
+                                child: Container(
+                                  width: 33,
+                                  height: 33,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: FileImage(
+                                        File(imagePickerController
+                                            .pickedImage!.path),
+                                      ),
                                     ),
                                   ),
                                 ),

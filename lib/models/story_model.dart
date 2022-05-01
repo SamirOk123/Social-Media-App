@@ -1,42 +1,34 @@
-class Post {
-  final String description;
+class Story {
   final String username;
   final String uid;
-  final String postId;
+  final String storyId;
   final String profImage;
-  final String postUrl;
-  final List likes;
+  final String storyUrl;
   final DateTime datePublished;
 
-  Post(
+  Story(
       {required this.datePublished,
-      required this.description,
-      required this.likes,
-      required this.postId,
-      required this.postUrl,
       required this.profImage,
+      required this.storyId,
+      required this.storyUrl,
       required this.uid,
       required this.username});
 
   Map<String, dynamic> toJson() => {
-        'description': description,
         'username': username,
         'uid': uid,
-        'postId': postId,
+        'storyId': storyId,
         'profImage': profImage,
-        'postUrl': postUrl,
-        'likes': likes,
+        'storyUrl': storyUrl,
         'datePublished': datePublished,
       };
 
-  // static Post fromSnap(DocumentSnapshot snap) {
+  // static Story fromSnap(DocumentSnapshot snap) {
   //   var snapshot = snap.data() as Map<String, dynamic>;
-  //   return Post(
+  //   return Story(
   //       datePublished: snapshot['datePublished'],
-  //       description: snapshot['description'],
-  //       likes: snapshot['likes'],
-  //       postId: snapshot['postId'],
-  //       postUrl: snapshot['postUrl'],
+  //       storyId: snapshot['storyId'],
+  //       storyUrl: snapshot['storyUrl'],
   //       profImage: snapshot['profImage'],
   //       uid: snapshot['uid'],
   //       username: snapshot['username']);

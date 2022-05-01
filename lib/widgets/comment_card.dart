@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/dependency_injection.dart';
+import 'package:social_media/views/main/profile.dart';
 import 'package:social_media/widgets/like_animation.dart';
 
 class CommentCard extends StatelessWidget {
@@ -14,6 +16,9 @@ class CommentCard extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          onTap: () => Get.to(
+            () => Profile(uid: snap['uid']),
+          ),
           leading: CircleAvatar(
             backgroundImage: NetworkImage(snap['profPic']),
           ),

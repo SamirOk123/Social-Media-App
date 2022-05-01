@@ -15,10 +15,13 @@ class ImagePickerController extends GetxController {
   //GETTING IMAGE FROM DEVICE
   Future<void> getImage(ImageSource source) async {
     final pickedFile = await imagePicker.pickImage(source: source);
-
-    File file = File(pickedFile!.path);
-    pickedImage = file;
-    update();
+    if (pickedFile == null) {
+      return;
+    } else {
+      File file = File(pickedFile.path);
+      pickedImage = file;
+      update();
+    }
   }
 
   //IMAGE CROP METHOD

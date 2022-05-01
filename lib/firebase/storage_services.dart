@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/models/comment_model.dart';
 import 'package:social_media/models/post_model.dart' as model;
+import 'package:social_media/models/story_model.dart';
 import 'package:uuid/uuid.dart';
 
 class FirebaseStorageServices {
@@ -69,7 +70,33 @@ class FirebaseStorageServices {
       _firestore.collection('posts').doc(postId).set(post.toJson());
       result = 'success';
     } catch (e) {
-      result = e.toString();
+      debugPrint(e.toString());
+    }
+    return result;
+  }
+  
+
+  //UPLOAD STORY
+  Future<String> uploadStory(
+      {required String uid,
+      required File file,
+      required String username,
+      required String profImage}) async {
+    String result = 'Some error occured!';
+    try {
+      String photoUrl = await uploadImageToStorage('stories', file, true);
+      String storyId = const Uuid().v1();
+      Story story = Story(
+          datePublished: DateTime.now(),
+          profImage: profImage,
+          storyId: storyId,
+          storyUrl: photoUrl,
+          uid: uid,
+          username: username);
+      _firestore.collection('stories').doc(storyId).set(story.toJson());
+      result = 'success';
+    } catch (e) {
+      debugPrint(e.toString());
     }
     return result;
   }
@@ -165,7 +192,7 @@ class FirebaseStorageServices {
   //   }
   // }
 
-  //FOLLOW / UNFOLLOW 
+  //FOLLOW / UNFOLLOW
   Future<void> followUser(
       {required String uid,
       required String followId,

@@ -40,7 +40,9 @@ class _PostState extends State<Post> {
     } catch (e) {
       functionsController.showSnackBar(context, e.toString());
     }
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -48,11 +50,9 @@ class _PostState extends State<Post> {
     return Column(
       children: [
         ListTile(
-          onTap: () {
-            Get.to(
-              () => Profile(uid: widget.snap['uid']),
-            );
-          },
+          onTap: () => Get.to(
+            () => Profile(uid: widget.snap['uid']),
+          ),
           leading: CircleAvatar(
             backgroundColor: Colors.black.withOpacity(0.05),
             radius: 2.5.h,

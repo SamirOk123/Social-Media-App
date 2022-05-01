@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
-import 'package:social_media/views/main/chat.dart';
 import 'package:social_media/widgets/gradient.dart';
 
 class Messages extends StatelessWidget {
@@ -17,7 +16,7 @@ class Messages extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(
-                      'Prithviraj Sukumaran',
+                      'Samir',
                       style: TextStyle(fontSize: 10.sp),
                     ),
                     subtitle: Text(
@@ -26,15 +25,14 @@ class Messages extends StatelessWidget {
                     ),
                     leading: CircleAvatar(
                       radius: 3.5.h,
-                      backgroundImage: const NetworkImage(
-                          'https://images.indianexpress.com/2021/12/Prithviraj-Sukumaran-1200by667.jpg'),
+                      backgroundImage: const AssetImage('assets/images/samir.jpg'),
                     ),
                     trailing: Text(
                       '11:34 AM',
                       style: TextStyle(fontSize: 10.sp),
                     ),
                     onTap: () {
-                      Get.to(() => const ChatScreen());
+                      // Get.to(() =>  ChatScreen());
                     },
                   );
                 },

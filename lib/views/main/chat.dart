@@ -6,7 +6,9 @@ import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/input_field.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({Key? key, required this.userData}) : super(key: key);
+
+  final dynamic userData;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +38,11 @@ class ChatScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: ListTile(
-            leading: const CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://images.indianexpress.com/2021/12/Prithviraj-Sukumaran-1200by667.jpg'),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(userData['photoUrl']),
             ),
             title: Text(
-              'Prithviraj Sukumaran',
+              userData['userName'],
               style: TextStyle(fontSize: 10.sp),
             ),
             subtitle: Text(

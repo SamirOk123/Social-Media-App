@@ -24,11 +24,12 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   var userData = {};
   int postLength = 0;
-  int followers = 0;
-  int following = 0;
+  int followersCount = 0;
+  int followingCount = 0;
   bool isFollowing = false;
   bool isLoading = false;
-
+  List followersList = [];
+  List followingList = [];
   @override
   void initState() {
     super.initState();
@@ -54,19 +55,26 @@ class _ProfileState extends State<Profile> {
           .get();
 
       postLength = postSnap.docs.length;
-      followers = userSnap.data()!['followers'].length;
-      following = userSnap.data()!['following'].length;
+      followersCount = userSnap.data()!['followers'].length;
+      followingCount = userSnap.data()!['following'].length;
+      followersList = userSnap.data()!['followers'];
+      followingList = userSnap.data()!['following'];
+
       isFollowing = userSnap
           .data()!['followers']
           .contains(FirebaseAuth.instance.currentUser!.uid);
 
       setState(() {});
     } catch (e) {
-      functionsController.showSnackBar(context, e.toString());
+      if (mounted) {
+        functionsController.showSnackBar(context, e.toString());
+      }
     }
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -123,7 +131,7 @@ class _ProfileState extends State<Profile> {
 
                                     setState(() {
                                       isFollowing = false;
-                                      followers--;
+                                      followersCount--;
                                     });
                                   },
                                   child: const Text(
@@ -133,7 +141,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 TextButton(
                                     onPressed: () =>
-                                        Get.to(() => const ChatScreen()),
+                                        Get.to(() =>  ChatScreen(userData: userData)),
                                     child: const Text(
                                       'Message',
                                       style: TextStyle(color: kBlack),
@@ -152,7 +160,7 @@ class _ProfileState extends State<Profile> {
 
                                       setState(() {
                                         isFollowing = true;
-                                        followers++;
+                                        followersCount++;
                                       });
                                     },
                                     child: const Text(
@@ -161,7 +169,7 @@ class _ProfileState extends State<Profile> {
                                     )),
                                 TextButton(
                                   onPressed: () =>
-                                      Get.to(() => const ChatScreen()),
+                                      Get.to(() =>  ChatScreen(userData: userData)),
                                   child: const Text(
                                     'Message',
                                     style: TextStyle(color: kBlack),
@@ -202,10 +210,24 @@ class _ProfileState extends State<Profile> {
                         children: [
                           PostsFollowersFollowing(
                               count: postLength.toString(), label: 'Posts'),
-                          PostsFollowersFollowing(
-                              count: followers.toString(), label: 'Followers'),
-                          PostsFollowersFollowing(
-                              count: following.toString(), label: 'Following'),
+                          InkWell(
+                            onTap: () {
+                              functionsController.profileScreenBottomSheet(
+                                  context: context, title: 'Followers');
+                            },
+                            child: PostsFollowersFollowing(
+                                count: followersCount.toString(),
+                                label: 'Followers'),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              functionsController.profileScreenBottomSheet(
+                                  context: context, title: 'Following');
+                            },
+                            child: PostsFollowersFollowing(
+                                count: followingCount.toString(),
+                                label: 'Following'),
+                          ),
                         ],
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       ),

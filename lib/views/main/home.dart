@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashed_circle/dashed_circle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:social_media/constants.dart';
 import 'package:social_media/dependency_injection.dart';
 import 'package:social_media/views/main/messages.dart';
 import 'package:social_media/views/sub/new_post.dart';
+import 'package:social_media/views/sub/new_story.dart';
 import 'package:social_media/views/sub/story_page.dart';
 import 'package:social_media/widgets/gradient.dart';
 import 'package:social_media/widgets/post.dart';
@@ -33,13 +35,38 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: SpeedDial(
+        backgroundColor: kBlack,
+        overlayColor: Colors.transparent,
+        spacing: 12,
+        spaceBetweenChildren: 10,
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+              onTap: () => Get.to(const NewPost()),
+              child: Image.asset(
+                'assets/icons/post.png',
+                width: 20,
+                height: 20,
+              ),
+              label: 'Post'),
+          SpeedDialChild(
+              onTap: () => Get.to(NewStory()),
+              child: Image.asset(
+                'assets/icons/story.png',
+                width: 20,
+                height: 20,
+              ),
+              label: 'Story'),
+        ],
+      ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(const NewPost());
+              Get.to(() => const NewPost());
             },
             icon: const Icon(
               Icons.add,
@@ -73,36 +100,61 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.only(
                     top: 2.h,
                   ),
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 1.4.h,
-                      );
-                    },
-                    itemCount: 15,
-                    itemBuilder: (context, index) {
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('stories')
+                        .orderBy('datePublished', descending: true)
+                        .snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                            snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       return Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: DashedCircle(
-                          color: Colors.pink,
-                          child: Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: InkWell(
-                              onTap: () {
-                                Get.to(() => const StoryPage());
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black.withOpacity(0.05),
-                                radius: 3.5.h,
-                                backgroundImage: NetworkImage(
-                                    userController.getUser.photoUrl),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              width: 8,
+                            );
+                          },
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: DashedCircle(
+                                color: Colors.pink,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(
+                                        () => StoryPage(
+                                          snap:
+                                              snapshot.data!.docs[index].data(),
+                                        ),
+                                      );
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor:
+                                          Colors.black.withOpacity(0.05),
+                                      radius: 3.5.h,
+                                      backgroundImage: NetworkImage(snapshot
+                                          .data!.docs[index]
+                                          .data()['profImage']),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
                       );
                     },
-                    scrollDirection: Axis.horizontal,
                   ),
                 ),
               ),
